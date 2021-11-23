@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const app = express();
 const mysql = require("mysql");
 const port = 8080;
+// Parses incoming request bodies
+app.use(bodyParser.urlencoded({extended:true}));
 
 
 // Connect to the mysql databse
@@ -23,9 +25,18 @@ connection.connect(err => {
     })
 });
 
+// a post method to add a new staff
+app.post('/AddingStaff', (req, res) => {
+    let name = req.body.name;
+    let id = req.body.id;
+    let position = req.body.position;
+    let statement = `insert into staff (name, id, position) values ('${name}', '${id}', '${position}')`
+    connection.query(statement, (err, result) => {
+        if (err)
+            console.error(err);
+    })
+})
 
-// Parses incoming request bodies
-app.use(bodyParser.urlencoded({extended:true}));
 
 
 // Set up routing
