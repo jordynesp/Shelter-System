@@ -35,3 +35,6 @@ TO DO:
             - check in time
             - check out time
             - comment/log
+
+- create a table of all rooms in the shelter to be used for assigning room numbers to customers
+- set the timezone of the database
