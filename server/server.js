@@ -7,6 +7,7 @@ const app = express();
 const mysql = require("mysql");
 const port = 8080;
 
+
 // Connect to the mysql databse
 const connection = mysql.createConnection({
     host: 'mysql',
@@ -22,14 +23,17 @@ connection.connect(err => {
     })
 });
 
+
 // Parses incoming request bodies
 app.use(bodyParser.urlencoded({extended:true}));
+
 
 // Set up routing
 app.use("/", express.static("/app/src/pages"));
 app.get("/", (req, res) => {
     res.redirect("/home.html");
 });
+
 
 // Make the app listen on port 8080
 app.listen(port, function() {
