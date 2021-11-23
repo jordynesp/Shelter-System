@@ -21,9 +21,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - data:/var/lib/mysql
+      - "./data:/var/lib/mysql"
     environment:
       MYSQL_ROOT_PASSWORD: admin
 
-volumes:
-  data:
