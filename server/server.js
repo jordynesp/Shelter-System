@@ -6,9 +6,10 @@ const bodyParser = require("body-parser");
 const app = express();
 const mysql = require("mysql");
 const port = 8080;
+
+
 // Parses incoming request bodies
 app.use(bodyParser.json({extended:true}));
-
 
 
 // Connect to the mysql databse
@@ -53,18 +54,32 @@ app.post('/updateStaff', (req, res) => {
     });
 });
 
-
 // Customers //
 // a post method to add a new customer 
-app.post('/addCustomer', (reg, res) => {
-    let name = req.body.CustomerName;
-    let room = req.body.roomNumber;
+app.post('/addCustomer', (req, res) => {
+    let name = req.body.name;
+    let room = req.body.room_num;
     let log = req.body.log;
-    let statement = `insert into customers (name, room_num, log, check_in) values('${name}','${room}' '${log}', CURRENT_TIME);`
-    connection.query(statement, (err) => {
-        if (err) throwError(err);
-    });
+    let statement = `insert into customers (name, room_num, log) values ('${name}', '${room}', '${log}')`;
+    // add customer to database
+    connection.query(statement, err => {
+        if (err) console.error(err);
+    })
+    let query = `select id from customers where room_num = ${room}`;
+    let id;
+    // get the ID of the new customer
+    connection.query(query, (err, result) => {
+        if (err) console.error(err);
+        id = result;
+        let update = `update rooms set id = ${id[0].id} where room_num = ${room}`
+        // update the room to hold the ID of the new customer
+        connection.query(update, err => {
+            if (err) console.error(err);
+        })
+    })
+    res.send();
 });
+
 
 app.post('/updateCustomers', (req, res) => {
     let customerID = req.body.customerID;
@@ -76,6 +91,10 @@ app.post('/updateCustomers', (req, res) => {
 
     let getID = `select * from rooms where id = ${customerID};`
 });
+
+
+
+
 
 
 
