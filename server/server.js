@@ -27,32 +27,63 @@ connection.connect(err => {
     })
 });
 
+const throwError = error => {
+    console.error(error);
+}
+
 // Staff //
 // a post method to add a new staff
 app.post('/addStaff', (req, res) => {
     let name = req.body.name;
     let position = req.body.position;
-    let statement = `insert into staff (name, position) values ('${name}', '${position}')`
+    let statement = `insert into staff (name, position) values ('${name}', '${position}');`
     connection.query(statement, err => {
-        if (err) console.error(err);
+        if (err) throwError(err);
     })
     res.send();
 });
 
+// a post method to update a staff's new position
+app.post('/updateStaff', (req, res) => {
+    let staffID = req.body.staffID;
+    let newPosition = req.body.newPosition;
+    let statement = `update staff set position = ${newPosition} where id = ${staffID};`
+    connection.query(statement, err => {
+        if (err) throwError(err);
+    });
+});
 
 
 // Customers //
 // a post method to add a new customer 
-app.post('/AddingCustomer', (reg, res) => {
+app.post('/addCustomer', (reg, res) => {
     let name = req.body.CustomerName;
     let room = req.body.roomNumber;
     let log = req.body.log;
-    let statement = `insert into customers (name, room_num, log, check_in) values('${name}','${room}' '${log}', CURRENT_TIME)`
-    connection.query(statement, (err, result) => {
-        if (err)
-            console.error(err);
+    let statement = `insert into customers (name, room_num, log, check_in) values('${name}','${room}' '${log}', CURRENT_TIME);`
+    connection.query(statement, (err) => {
+        if (err) throwError(err);
     });
 });
+
+app.post('/updateCustomers', (req, res) => {
+    let customerID = req.body.customerID;
+    let newRoom = req.body.newRoom;
+    let updateRoom = `update customers set room_num = ${newRoom} where id = ${customerID};`
+    connection.query(updateRoom, err => {
+        if (err) throwError(err);
+    });
+
+    let getID = `select * from rooms where id = ${customerID};`
+});
+
+
+
+
+
+
+
+
 
 // Set up routing
 app.use("/", express.static("/app/src/pages"));
