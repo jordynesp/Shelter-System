@@ -6,6 +6,9 @@ const bodyParser = require("body-parser");
 const app = express();
 const mysql = require("mysql");
 const port = 8080;
+// Parses incoming request bodies
+app.use(bodyParser.json({extended:true}));
+
 
 
 // Connect to the mysql databse
@@ -15,6 +18,7 @@ const connection = mysql.createConnection({
     user: 'root',
     password: 'admin'
 });
+
 connection.connect(err => {
     if (err) throw err;
     connection.query("USE shelter;", (err, result) => {
@@ -23,11 +27,7 @@ connection.connect(err => {
     })
 });
 
-
-// Parses incoming request bodies
-app.use(bodyParser.json({extended:true}));
-
-
+// Staff //
 // a post method to add a new staff
 app.post('/addStaff', (req, res) => {
     let name = req.body.name;
@@ -37,8 +37,22 @@ app.post('/addStaff', (req, res) => {
         if (err) console.error(err);
     })
     res.send();
-})
+});
 
+
+
+// Customers //
+// a post method to add a new customer 
+app.post('/AddingCustomer', (reg, res) => {
+    let name = req.body.CustomerName;
+    let room = req.body.roomNumber;
+    let log = req.body.log;
+    let statement = `insert into customers (name, room_num, log, check_in) values('${name}','${room}' '${log}', CURRENT_TIME)`
+    connection.query(statement, (err, result) => {
+        if (err)
+            console.error(err);
+    });
+});
 
 // Set up routing
 app.use("/", express.static("/app/src/pages"));
