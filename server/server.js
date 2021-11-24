@@ -7,7 +7,8 @@ const app = express();
 const mysql = require("mysql");
 const port = 8080;
 // Parses incoming request bodies
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json({extended:true}));
+
 
 
 // Connect to the mysql databse
@@ -17,6 +18,7 @@ const connection = mysql.createConnection({
     user: 'root',
     password: 'admin'
 });
+
 connection.connect(err => {
     if (err) throw err;
     connection.query("USE shelter;", (err, result) => {
@@ -30,12 +32,14 @@ connection.connect(err => {
 app.post('/AddingStaff', (req, res) => {
     let name = req.body.StaffName;
     let position = req.body.position;
-    let statement = `insert into staff (name, position) values ('${name}', '${position}')`
+    let statement = `insert into staff (name, position) values ('${name}', '${position}');`
     connection.query(statement, (err, result) => {
-        if (err)
-            console.error(err);
+        if (err) console.error(err);
     })
-})
+    res.send();
+});
+
+
 
 // Customers //
 // a post method to add a new customer 
@@ -48,7 +52,7 @@ app.post('/AddingCustomer', (reg, res) => {
         if (err)
             console.error(err);
     });
-})
+});
 
 // Set up routing
 app.use("/", express.static("/app/src/pages"));
