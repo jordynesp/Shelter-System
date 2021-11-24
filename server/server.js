@@ -25,19 +25,30 @@ connection.connect(err => {
     })
 });
 
+// Staff //
 // a post method to add a new staff
 app.post('/AddingStaff', (req, res) => {
-    let name = req.body.name;
-    let id = req.body.id;
+    let name = req.body.StaffName;
     let position = req.body.position;
-    let statement = `insert into staff (name, id, position) values ('${name}', '${id}', '${position}')`
+    let statement = `insert into staff (name, position) values ('${name}', '${position}')`
     connection.query(statement, (err, result) => {
         if (err)
             console.error(err);
     })
 })
 
-
+// Customers //
+// a post method to add a new customer 
+app.post('/AddingCustomer', (reg, res) => {
+    let name = req.body.CustomerName;
+    let room = req.body.roomNumber;
+    let log = req.body.log;
+    let statement = `insert into customers (name, room_num, log, check_in) values('${name}','${room}' '${log}', CURRENT_TIME)`
+    connection.query(statement, (err, result) => {
+        if (err)
+            console.error(err);
+    });
+})
 
 // Set up routing
 app.use("/", express.static("/app/src/pages"));
