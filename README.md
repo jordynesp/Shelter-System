@@ -4,8 +4,8 @@ A system used for a CBO to keep track of residents in a shelter.
 
 TO DO:
 - create a one-page html client side with minimal functionality for staff
-    - inputs for registering/changing/deleting staff
-    - inputs for registering/updating/deleting customers
+    - inputs for changing/deleting staff
+    - inputs for updating/deleting customers
     - a way to show all customers
     - a way to show all data and reports for a single specified customer 
     - a way to add a report/new info about a customer (which room they are in, check in/out, etc.)

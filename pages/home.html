@@ -6,14 +6,16 @@
   </head>
 
 <body>
-     
+
+<!-------------- New Staff Member  -------------->
 <form class="form" id="staff">
-  <label for="name">Name:</label>
-  <input type="text" name="name" id="name"><br>
+  <label>New Staff Member</label><br>
+  <label for="staff_name">Name:</label>
+  <input type="text" name="staff_name" id="staff_name"><br>
   <label for="position">Position:</label>
   <input type="text" name="position" id="position"><br>
   <button type="submit">Add Staff Member</button>
-</form>
+</form><br><br>
 
 <script>
   // add a new staff member through a form
@@ -22,7 +24,7 @@
     e.preventDefault();
     // data to be sent to server
     let data = {
-      name: document.getElementById("name").value,
+      name: document.getElementById("staff_name").value,
       position: document.getElementById("position").value
     }
     // create a fetch request
@@ -35,9 +37,53 @@
     .then(json => console.log(json))
     .catch(err => console.log(err));
     // clear input fields
-    document.getElementById("name").value = "";
+    document.getElementById("staff_name").value = "";
     document.getElementById("position").value = "";
   })
+</script>
+
+
+<!----------------- New Customer ---------------->
+<form class="form" id="customer">
+  <label>New Customer</label><br>
+  <label for="customer_name">Name:</label>
+  <input type="text" name="customer_name" id="customer_name"><br>
+  <label for="room_num">Room Number:</label>
+  <input type="text" name="room_num" id="room_num"><br>
+  <label for="log">Log:</label>
+  <input type="text" name="log" id="log"><br>
+  <button type="submit">Add Customer</button>
+</form><br>
+
+<label for="customer_list">Customer List:</label><br>
+<textarea id="customer_list" cols="75" rows="25"></textarea>
+
+<script>  
+  // add a new customer through a form
+  const customer = document.getElementById("customer");
+  customer.addEventListener("submit", e => {
+    e.preventDefault();
+    // data to be sent to server
+    let data = {
+      name: document.getElementById("customer_name").value,
+      room_num: document.getElementById("room_num").value,
+      log: document.getElementById("log").value
+    }
+    // create a fetch request
+    fetch("/addCustomer", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {"Content-type": "application/json"}
+    })
+    .then(response => response.json())
+    .then(json => console.log(json))
+    .catch(err => console.log(err));
+    // clear input fields
+    document.getElementById("customer_name").value = "";
+    document.getElementById("room_num").value = "";
+    document.getElementById("log").value = "";
+  })
+
 
 </script>
 
