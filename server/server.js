@@ -25,17 +25,21 @@ connection.connect(err => {
     })
 });
 
+
+// Parses incoming request bodies
+app.use(bodyParser.json({extended:true}));
+
+
 // a post method to add a new staff
-app.post('/AddingStaff', (req, res) => {
+app.post('/testing', (req, res) => {
     let name = req.body.name;
     let position = req.body.position;
     let statement = `insert into staff (name, position) values ('${name}', '${position}')`
     connection.query(statement, (err, result) => {
-        if (err)
-            console.error(err);
+        if (err) console.error(err);
     })
+    res.send();
 })
-
 
 
 // Set up routing
