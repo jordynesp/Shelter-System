@@ -18,14 +18,6 @@ TO DO:
     - a post method for showing all customers
     - a post method for showing a report of a customer
     - a get/post method for adding a report about a customer
-    
-- basic database structure to be created:
-    - a table of all the rooms in the shelter:
-        - int field for room num
-        - an int field for ID of the customer assigned to the room
-    
-    - a table of all the job positions for staff within the shelter:
-        - a text field for job position
 
 Extra:
 - set the timezone of the database (last minute task)
