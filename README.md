@@ -11,8 +11,6 @@ TO DO:
     - a way to add a report/new info about a customer (which room they are in, check in/out, etc.)
 
 - create a one-page js server side with minimal functionality for staff:
-    - a get method for adding new staff
-    - a get method for adding new customers
     - a get method for changing staff
     - a get method for changing customers
     - a get method for deleting staff
@@ -22,19 +20,12 @@ TO DO:
     - a get/post method for adding a report about a customer
     
 - basic database structure to be created:
-    - a database "shelter" which contains:
-        - a table for staff with fields:
-            - name
-            - ID
-            - job title
+    - a table of all the rooms in the shelter:
+        - int field for room num
+        - an int field for ID of the customer assigned to the room
     
-        - a table for customers with fields:
-            - name
-            - ID
-            - room number/floor
-            - check in time
-            - check out time
-            - comment/log
+    - a table of all the job positions for staff within the shelter:
+        - a text field for job position
 
-- create a table of all rooms in the shelter to be used for assigning room numbers to customers
-- set the timezone of the database
+Extra:
+- set the timezone of the database (last minute task)

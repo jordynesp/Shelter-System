@@ -16,7 +16,7 @@
 </form>
 
 <script>
-  // send a fetch request when the form is submitted
+  // add a new staff member through a form
   const staff = document.getElementById("staff");
   staff.addEventListener("submit", e => {
     e.preventDefault();
@@ -26,7 +26,7 @@
       position: document.getElementById("position").value
     }
     // create a fetch request
-    fetch("/testing", {
+    fetch("/addStaff", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {"Content-type": "application/json"}
