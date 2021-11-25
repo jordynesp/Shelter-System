@@ -5,6 +5,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const mysql = require("mysql");
+const { response } = require("express");
 const port = 8080;
 
 // Parses incoming request bodies
@@ -135,6 +136,24 @@ app.get('/roomList', (req, res) => {
             rooms.push(room);
         })
         res.send(JSON.stringify(rooms));
+    })
+})
+
+// a post method to retrieve a customer's info
+app.post('/customerInfo', (req, res) => {
+    let id = req.body.id;
+    let statement = `select * from customers where id = ${id}`;
+    connection.query(statement, (err, result) => {
+        if (err) throwError(err);
+        let info = {
+            name: result[0].name,
+            id: result[0].id,
+            room_num: result[0].room_num,
+            check_in: result[0].check_in,
+            check_out: result[0].check_out,
+            log: result[0].log
+        }
+        res.send(JSON.stringify(info));
     })
 })
 
