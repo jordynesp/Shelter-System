@@ -41,40 +41,40 @@
     document.getElementById("position").value = "";
   })
 </script>
+<!----------------------------------------------->
 
 
 <!------------- Update Staff Member  ------------>
 <form class="form" id="up-staff">
-  <br><label for="title"> Update Staff:</label><br>
+  <br><label for="title"> Update Staff</label><br>
   <label for="staff-id">ID:</label>
   <input type="text" name="staff-id" id="staff-id"><br>
-  <label for="staff-position">Position:</label>
-  <input type="text" name="position" id="position"><br>
+  <label for="newPosition">Position:</label>
+  <input type="text" name="newPosition" id="newPosition"><br>
   <button type="submit">Update Staff Member</button>
-</form>
+</form><br>
 
 <script>
   const updateStaff = document.getElementById("up-staff");
   updateStaff.addEventListener("submit", e => {
     e.preventDefault();
-
     // data to be sent to server
-    let newData = {
-      staffID: docmument.getElementById("staff-id").value,
-      newPosition: document.getElementById("position").value
+    let data = {
+      staffID: document.getElementById("staff-id").value,
+      newPosition: document.getElementById("newPosition").value
     }
     // create a fetch request
     fetch("/updateStaff", {
-          method: "POST",
-          body: JSON.stringify(newData),
-          headers: {"Content-type": "application/json"}
-        })
-        .then(response => response.json())
-        .then(json => console.log(json))
-        .catch(err => console.log(err));
-
-        document.getElementById("staff-id").value = "";
-        document.getElementById("position").value = "";
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {"Content-type": "application/json"}
+    })
+    .then(response => response.json())
+    .then(json => console.log(json))
+    .catch(err => console.log(err));
+    // clear input fields
+    document.getElementById("staff-id").value = "";
+    document.getElementById("newPosition").value = "";
   })
 </script>
 <!----------------------------------------------->
@@ -154,29 +154,35 @@
 
 <!--------------- Update Customer --------------->
 <form class="form" id="up-customer">
-  <br><label for="title"> Update Customer:</label><br>
+  <br><label for="title"> Update Customer</label><br>
   <label for="customer-id">ID:</label>
   <input type="text" name="customer-id" id="customer-id"><br>
   <label for="room">Room:</label>
   <input type="text" name="room" id="room"><br>
-  <label for="checkout">Checkout:</label>
-  <input type="text" name="checkout" id="checkout"><br>
-  <label for="log">Log:</label>
-  <input type="text" name="log" id="log"><br>
+  <label for="uplog">Log:</label>
+  <input type="text" name="uplog" id="uplog"><br>
   <button type="submit">Update Customer</button>
-</form>
+</form><br><br>
 
-<!----------------- Update Customer ---------------->
 <script>
   const updateCustomer = document.getElementById("up-customer");
   updateCustomer.addEventListener("submit", e => {
     e.preventDefault();
 
+    let newRoom = document.getElementById("room").value;
+    if (newRoom == "") {
+      newRoom = null;
+    }
+    let log = document.getElementById("uplog").value;
+    if (log == "") {
+      log = null;
+    }
+
     // data to be sent to server
     let newData = {
       customerID: document.getElementById("customer-id").value,
-      newRoom: document.getElementById("room").value,
-      log: document.getElementById("log").value
+      newRoom: newRoom,
+      log: log
     }
 
     // create a fetch request
@@ -191,7 +197,7 @@
 
     document.getElementById("customer-id").value = "";
     document.getElementById("room").value = "";
-    document.getElementById("log").value = "";
+    document.getElementById("uplog").value = "";
   })
 </script>
 <!----------------------------------------------->
@@ -226,6 +232,56 @@
     document.getElementById("deletecustomer-id").value = "";   
   })
 </script>
+<!----------------------------------------------->
+
+
+
+
+
+
+
+<!--------------- Get Customer Info ------------->
+<form class="form" id="customerInfo">
+  <label>Customer Information</label><br>
+  <label for="customerInfo-id">ID:</label>
+  <input type="text" name="customerInfo-id" id="customerInfo-id"><br>
+  <button type="submit">Get Customer Info</button>
+</form>
+<textarea id="customerInfo-result" cols="75" rows="5"></textarea><br><br>
+
+
+<script>  
+  // get info about a customer through a form
+  const customerInfo = document.getElementById("customerInfo");
+  customerInfo.addEventListener("submit", e => {
+    e.preventDefault();
+    // data to be sent to server
+    let data = {
+      id: document.getElementById("customerInfo-id").value
+    }
+    // create a fetch request
+    fetch("/customerInfo", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {"Content-type": "application/json"}
+    })
+    .then(response => response.json())
+    .then(json => {
+      let info = `Name: ${json.name}\nID: ${json.id}\nRoom Number: ${json.room_num}\nCheck-In Time: ${json.check_in}\nCheck-Out Time: ${json.check_out}\nLog: ${json.log}\n`;
+      document.getElementById("customerInfo-result").value = info;
+    })
+    .catch(err => console.log(err));
+    // clear input fields
+    document.getElementById("customerInfo-id").value = "";
+  })
+</script>
+<!----------------------------------------------->
+
+
+
+
+
+
 
 
 
@@ -252,6 +308,14 @@
     .catch(err => console.log(err));  
   })
 </script>
+<!----------------------------------------------->
+
+
+
+
+
+
+
 
 
 <!------------- Get Costumers w/ IDs ------------>
@@ -280,6 +344,14 @@
     .catch(err => console.log(err));  
   })
 </script>
+<!----------------------------------------------->
+
+
+
+
+
+
+
 
 
 <!------------- Get Employees w/ IDs ------------>
@@ -308,10 +380,7 @@
     .catch(err => console.log(err));  
   })
 </script>
-
-
-
-
+<!----------------------------------------------->
 
 
 </body>

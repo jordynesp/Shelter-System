@@ -39,18 +39,18 @@ app.post('/addStaff', (req, res) => {
     connection.query(statement, err => {
         if (err) throwError(err);
     })
-    res.send();
+    res.send(JSON.stringify("Request Complete"));
 });
 
 // a post method to update a staff's new position
 app.post('/updateStaff', (req, res) => {
     let staffID = req.body.staffID;
     let newPosition = req.body.newPosition;
-    let statement = `update staff set position = ${newPosition} where id = ${staffID};`
+    let statement = `update staff set position = "${newPosition}" where id = ${staffID};`
     connection.query(statement, err => {
         if (err) throwError(err);
     });
-    res.send();
+    res.send(JSON.stringify("Request Complete"));
 });
 
 // a post method to delete a staff from staff table when staff's id is given
@@ -68,7 +68,7 @@ app.post('/addCustomer', (req, res) => {
     let name = req.body.name;
     let room = req.body.room_num;
     let log = req.body.log;
-    let statement = `insert into customers (name, room_num, log) values ('${name}', '${room}', '${log}')`;
+    let statement = `insert into customers (name, room_num, log) values ('${name}', '${room}', '\nEntry: ${log}')`;
     // add customer to database
     connection.query(statement, err => {
         if (err) throwError(err);
@@ -95,40 +95,44 @@ app.post('/updateCustomers', (req, res) => {
     let customerID = req.body.customerID;
     let newRoom = req.body.newRoom;
 
-    // set the current room to 0 first
-    connection.query(`select room_num from rooms where id = ${customerID};`, (err, result) => {
-        if (err) throwError(err);
-        
-        // get the current room number
-        let roomNum = result[0].room_num;
+    if (newRoom != null) {
+        // set the current room to 0 first
+        connection.query(`select room_num from rooms where id = ${customerID};`, (err, result) => {
+            if (err) throwError(err);
+            
+            // get the current room number
+            let roomNum = result[0].room_num;
 
-        connection.query(`update rooms set id = 0 where room_num = ${roomNum};`, err => {
+            connection.query(`update rooms set id = 0 where room_num = ${roomNum};`, err => {
+                if (err) throwError(err);
+            });
+        });
+
+        // updates the new room number in customers table
+        connection.query(`update customers set room_num = ${newRoom} where id = ${customerID};`, err => {
             if (err) throwError(err);
         });
-    });
 
-    // updates the new room number in customers table
-    connection.query(`update customers set room_num = ${newRoom} where id = ${customerID};`, err => {
-        if (err) throwError(err);
-    });
-
-    // updates the customer ID to the new room number
-    connection.query(`update rooms set id = ${customerID} where room_num = ${newRoom}`, err => {
-        if (err) throwError(err);
-    });
-
-
-    connection.query(`select * from customers where id = ${customerID};`, (err, result) => {
-        if (err) throwError(err);
-        
-        // get the log of a customer and append a new line 
-        let log = result[0].log;
-        log += `| ${req.body.log} `;
-        let updateLog = `update customers set log = '${log}' where id = ${customerID};`
-        connection.query(updateLog, err => {
+        // updates the customer ID to the new room number
+        connection.query(`update rooms set id = ${customerID} where room_num = ${newRoom}`, err => {
             if (err) throwError(err);
         });
-    });
+    }
+    
+    if (req.body.log != null) {
+        connection.query(`select * from customers where id = ${customerID};`, (err, result) => {
+            if (err) throwError(err);
+            
+            // get the log of a customer and append a new line 
+            let log = result[0].log;
+            log += `\nEntry: ${req.body.log}`;
+            let updateLog = `update customers set log = '${log}' where id = ${customerID};`
+            connection.query(updateLog, err => {
+                if (err) throwError(err);
+            });
+        });
+    }
+    res.send(JSON.stringify("Request Complete"));
 });
 
 app.post('/deleteCustomers', (req, res) => {
@@ -149,7 +153,7 @@ app.post('/deleteCustomers', (req, res) => {
     connection.query(`delete from customers where id = ${deleteID};`, err => {
         if (err) throwError(err);   
     })
-    res.send(JSON.stringify("Hombre"));
+    res.send(JSON.stringify("Request Complete"));
 })
 
 // a get method to send a list of available rooms
@@ -164,6 +168,24 @@ app.get('/roomList', (req, res) => {
             rooms.push(room);
         })
         res.send(JSON.stringify(rooms));
+    })
+})
+
+// a post method to retrieve a customer's info
+app.post('/customerInfo', (req, res) => {
+    let id = req.body.id;
+    let statement = `select * from customers where id = ${id}`;
+    connection.query(statement, (err, result) => {
+        if (err) throwError(err);
+        let info = {
+            name: result[0].name,
+            id: result[0].id,
+            room_num: result[0].room_num,
+            check_in: result[0].check_in,
+            check_out: result[0].check_out,
+            log: result[0].log
+        }
+        res.send(JSON.stringify(info));
     })
 })
 
