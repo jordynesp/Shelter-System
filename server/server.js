@@ -151,7 +151,7 @@ app.post('/deleteCustomers', (req, res) => {
     connection.query(`delete from customers where id = ${deleteID};`, err => {
         if (err) throwError(err);   
     })
-    res.send(JSON.stringify("Hombre"));
+    res.send(JSON.stringify("Request Complete"));
 })
 
 // a get method to send a list of available rooms
