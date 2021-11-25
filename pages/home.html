@@ -108,8 +108,6 @@
   <input type="text" name="customer-id" id="customer-id"><br>
   <label for="room">Room:</label>
   <input type="text" name="room" id="room"><br>
-  <label for="checkout">Checkout:</label>
-  <input type="text" name="checkout" id="checkout"><br>
   <label for="uplog">Log:</label>
   <input type="text" name="uplog" id="uplog"><br>
   <button type="submit">Update Customer</button>
@@ -120,11 +118,20 @@
   updateCustomer.addEventListener("submit", e => {
     e.preventDefault();
 
+    let newRoom = document.getElementById("room").value;
+    if (newRoom == "") {
+      newRoom = null;
+    }
+    let log = document.getElementById("uplog").value;
+    if (log == "") {
+      log = null;
+    }
+
     // data to be sent to server
     let newData = {
       customerID: document.getElementById("customer-id").value,
-      newRoom: document.getElementById("room").value,
-      log: document.getElementById("uplog").value
+      newRoom: newRoom,
+      log: log
     }
 
     // create a fetch request

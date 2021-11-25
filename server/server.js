@@ -5,7 +5,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const mysql = require("mysql");
-const { response } = require("express");
 const port = 8080;
 
 // Parses incoming request bodies
@@ -60,7 +59,7 @@ app.post('/addCustomer', (req, res) => {
     let name = req.body.name;
     let room = req.body.room_num;
     let log = req.body.log;
-    let statement = `insert into customers (name, room_num, log) values ('${name}', '${room}', '${log}')`;
+    let statement = `insert into customers (name, room_num, log) values ('${name}', '${room}', '\nEntry: ${log}')`;
     // add customer to database
     connection.query(statement, err => {
         if (err) throwError(err);
@@ -87,40 +86,43 @@ app.post('/updateCustomers', (req, res) => {
     let customerID = req.body.customerID;
     let newRoom = req.body.newRoom;
 
-    // set the current room to 0 first
-    connection.query(`select room_num from rooms where id = ${customerID};`, (err, result) => {
-        if (err) throwError(err);
-        
-        // get the current room number
-        let roomNum = result[0].room_num;
+    if (newRoom != null) {
+        // set the current room to 0 first
+        connection.query(`select room_num from rooms where id = ${customerID};`, (err, result) => {
+            if (err) throwError(err);
+            
+            // get the current room number
+            let roomNum = result[0].room_num;
 
-        connection.query(`update rooms set id = 0 where room_num = ${roomNum};`, err => {
+            connection.query(`update rooms set id = 0 where room_num = ${roomNum};`, err => {
+                if (err) throwError(err);
+            });
+        });
+
+        // updates the new room number in customers table
+        connection.query(`update customers set room_num = ${newRoom} where id = ${customerID};`, err => {
             if (err) throwError(err);
         });
-    });
 
-    // updates the new room number in customers table
-    connection.query(`update customers set room_num = ${newRoom} where id = ${customerID};`, err => {
-        if (err) throwError(err);
-    });
-
-    // updates the customer ID to the new room number
-    connection.query(`update rooms set id = ${customerID} where room_num = ${newRoom}`, err => {
-        if (err) throwError(err);
-    });
-
-
-    connection.query(`select * from customers where id = ${customerID};`, (err, result) => {
-        if (err) throwError(err);
-        
-        // get the log of a customer and append a new line 
-        let log = result[0].log;
-        log += `| ${req.body.log} `;
-        let updateLog = `update customers set log = '${log}' where id = ${customerID};`
-        connection.query(updateLog, err => {
+        // updates the customer ID to the new room number
+        connection.query(`update rooms set id = ${customerID} where room_num = ${newRoom}`, err => {
             if (err) throwError(err);
         });
-    });
+    }
+    
+    if (req.body.log != null) {
+        connection.query(`select * from customers where id = ${customerID};`, (err, result) => {
+            if (err) throwError(err);
+            
+            // get the log of a customer and append a new line 
+            let log = result[0].log;
+            log += `\nEntry: ${req.body.log}`;
+            let updateLog = `update customers set log = '${log}' where id = ${customerID};`
+            connection.query(updateLog, err => {
+                if (err) throwError(err);
+            });
+        });
+    }
     res.send(JSON.stringify("Request Complete"));
 });
 
