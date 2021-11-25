@@ -1,46 +1,17 @@
 <!DOCTYPE html>
-
-<html>
-  <head>
-    <title> Home </title>
-  </head>
-
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the shelter</title>
+</head>
 <body>
-     
-<form class="form" id="staff">
-  <label for="name">Name:</label>
-  <input type="text" name="name" id="name"><br>
-  <label for="position">Position:</label>
-  <input type="text" name="position" id="position"><br>
-  <button type="submit">Add Staff Member</button>
-</form>
-
-<script>
-  // add a new staff member through a form
-  const staff = document.getElementById("staff");
-  staff.addEventListener("submit", e => {
-    e.preventDefault();
-    // data to be sent to server
-    let data = {
-      name: document.getElementById("name").value,
-      position: document.getElementById("position").value
-    }
-    // create a fetch request
-    fetch("/addStaff", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {"Content-type": "application/json"}
-    })
-    .then(response => response.json())
-    .then(json => console.log(json))
-    .catch(err => console.log(err));
-    // clear input fields
-    document.getElementById("name").value = "";
-    document.getElementById("position").value = "";
-  })
-
-</script>
-
+    <h1 style="font-size: 50px;">
+        Welcome!
+    </h1>
+    <p style="font-size: 20px;"><b>Please choose:</b></p>
+    <button onclick="location.href='customers.html'"> Customer </button>
+    <button onclick="location.href='staff.html'"> Staff </button>
 </body>
-
 </html>
