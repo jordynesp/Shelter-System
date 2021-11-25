@@ -63,18 +63,19 @@ app.post('/addCustomer', (req, res) => {
     let statement = `insert into customers (name, room_num, log) values ('${name}', '${room}', '${log}')`;
     // add customer to database
     connection.query(statement, err => {
-        if (err) console.error(err);
+        if (err) throwError(err);
     })
     let query = `select id from customers where room_num = ${room}`;
     let id;
+
     // get the ID of the new customer
     connection.query(query, (err, result) => {
-        if (err) console.error(err);
+        if (err) throwError(err);
         id = result;
         let update = `update rooms set id = ${id[0].id} where room_num = ${room}`
         // update the room to hold the ID of the new customer
         connection.query(update, err => {
-            if (err) console.error(err);
+            if (err) throwError(err);
         })
     })
     res.send();
@@ -82,26 +83,45 @@ app.post('/addCustomer', (req, res) => {
 
 
 app.post('/updateCustomers', (req, res) => {
+
     let customerID = req.body.customerID;
     let newRoom = req.body.newRoom;
-    let updateRoom = `update customers set room_num = ${newRoom} where id = ${customerID};`
-    connection.query(updateRoom, err => {
+
+    // set the current room to 0 first
+    connection.query(`select room_num from rooms where id = ${customerID};`, (err, result) => {
+        if (err) throwError(err);
+        
+        // get the current room number
+        let roomNum = result[0].room_num;
+
+        connection.query(`update rooms set id = 0 where room_num = ${roomNum};`, err => {
+            if (err) throwError(err);
+        });
+    });
+
+    // updates the new room number in customers table
+    connection.query(`update customers set room_num = ${newRoom} where id = ${customerID};`, err => {
         if (err) throwError(err);
     });
 
-    let getID = `select * from rooms where id = ${customerID};`
+    // updates the customer ID to the new room number
+    connection.query(`update rooms set id = ${customerID} where room_num = ${newRoom}`, err => {
+        if (err) throwError(err);
+    });
+
+
+    connection.query(`select * from customers where id = ${customerID};`, (err, result) => {
+        if (err) throwError(err);
+        
+        // get the log of a customer and append a new line 
+        let log = result[0].log;
+        log += `| ${req.body.log} `;
+        let updateLog = `update customers set log = '${log}' where id = ${customerID};`
+        connection.query(updateLog, err => {
+            if (err) throwError(err);
+        });
+    });
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Set up routing
