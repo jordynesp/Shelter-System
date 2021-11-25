@@ -39,18 +39,18 @@ app.post('/addStaff', (req, res) => {
     connection.query(statement, err => {
         if (err) throwError(err);
     })
-    res.send();
+    res.send(JSON.stringify("Request Complete"));
 });
 
 // a post method to update a staff's new position
 app.post('/updateStaff', (req, res) => {
     let staffID = req.body.staffID;
     let newPosition = req.body.newPosition;
-    let statement = `update staff set position = ${newPosition} where id = ${staffID};`
+    let statement = `update staff set position = "${newPosition}" where id = ${staffID};`
     connection.query(statement, err => {
         if (err) throwError(err);
     });
-    res.send();
+    res.send(JSON.stringify("Request Complete"));
 });
 
 // Customers //
@@ -77,7 +77,7 @@ app.post('/addCustomer', (req, res) => {
             if (err) throwError(err);
         })
     })
-    res.send("please");
+    res.send(JSON.stringify("Request Complete"));
 });
 
 // a post method to update customers
@@ -120,6 +120,7 @@ app.post('/updateCustomers', (req, res) => {
             if (err) throwError(err);
         });
     });
+    res.send(JSON.stringify("Request Complete"));
 });
 
 // a get method to send a list of available rooms
