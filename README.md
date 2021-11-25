@@ -1,7 +1,6 @@
 # Shelter-System
 A system used for a CBO to keep track of residents in a shelter.
 
-
 TO DO:
 - create a one-page html client side with minimal functionality for staff
     - inputs for changing/deleting staff

@@ -52,6 +52,7 @@ app.post('/updateStaff', (req, res) => {
     connection.query(statement, err => {
         if (err) throwError(err);
     });
+    res.send();
 });
 
 // Customers //
@@ -63,24 +64,24 @@ app.post('/addCustomer', (req, res) => {
     let statement = `insert into customers (name, room_num, log) values ('${name}', '${room}', '${log}')`;
     // add customer to database
     connection.query(statement, err => {
-        if (err) console.error(err);
+        if (err) throwError(err);
     })
     let query = `select id from customers where room_num = ${room}`;
     let id;
     // get the ID of the new customer
     connection.query(query, (err, result) => {
-        if (err) console.error(err);
+        if (err) throwError(err);
         id = result;
         let update = `update rooms set id = ${id[0].id} where room_num = ${room}`
         // update the room to hold the ID of the new customer
         connection.query(update, err => {
-            if (err) console.error(err);
+            if (err) throwError(err);
         })
     })
-    res.send();
+    res.send("please");
 });
 
-
+// a post method to update customers
 app.post('/updateCustomers', (req, res) => {
     let customerID = req.body.customerID;
     let newRoom = req.body.newRoom;
@@ -93,15 +94,20 @@ app.post('/updateCustomers', (req, res) => {
 });
 
 
-
-
-
-
-
-
-
-
-
+// a get method to send a list of available rooms
+app.get('/roomList', (req, res) => {
+    let statement = `select room_num from rooms where id = 0`;
+    connection.query(statement, (err, result) => {
+        if (err) throwError(err);
+        let rooms = [];
+        Object.keys(result).forEach(key => {
+            let row = result[key];
+            let room = row.room_num;
+            rooms.push(room);
+        })
+        res.send(JSON.stringify(rooms));
+    })
+})
 
 
 // Set up routing

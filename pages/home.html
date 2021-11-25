@@ -17,41 +17,6 @@
   <button type="submit">Add Staff Member</button>
 </form><br><br>
 
-<form class="form" id="up-staff">
-  <br><label for="title"> Update Staff:</label><br>
-  <label for="staff-id">ID:</label>
-  <input type="text" name="staff-id" id="staff-id"><br>
-  <label for="staff-position">Position:</label>
-  <input type="text" name="position" id="position"><br>
-  <button type="submit">Update Staff Member</button>
-</form>
-
-<form class="form" id="del-staff">
-  <br><label for="title"> Delete Staff:</label><br>
-  <label for="staff-id">ID:</label>
-  <input type="text" name="staff-id" id="staff-id"><br>
-  <button type="submit">Delete Staff Member</button>
-</form>
-
-<form class="form" id="up-customer">
-  <br><label for="title"> Update Customer:</label><br>
-  <label for="customer-id">ID:</label>
-  <input type="text" name="customer-id" id="customer-id"><br>
-  <label for="room">Room:</label>
-  <input type="text" name="room" id="room"><br>
-  <label for="checkout">Checkout:</label>
-  <input type="text" name="checkout" id="checkout"><br>
-  <label for="log">Log:</label>
-  <input type="text" name="log" id="log"><br>
-  <button type="submit">Update Customer</button>
-</form>
-
-<form class="form" id="del-customer">
-  <br><label for="title"> Delete Customer:</label><br>
-  <label for="customer-id">ID:</label>
-  <input type="text" name="customer-id" id="customer-id"><br>
-  <button type="submit">Delete Customer</button>
-</form>
 
 <script>
   // add a new staff member through a form
@@ -89,10 +54,8 @@
   <label for="log">Log:</label>
   <input type="text" name="log" id="log"><br>
   <button type="submit">Add Customer</button>
-</form><br>
+</form><br><br>
 
-<label for="customer_list">Customer List:</label><br>
-<textarea id="customer_list" cols="75" rows="25"></textarea>
 
 <script>  
   // add a new customer through a form
@@ -119,8 +82,27 @@
     document.getElementById("room_num").value = "";
     document.getElementById("log").value = "";
   })
+</script>
 
 
+<!------------- Get Available Rooms ------------->
+<form class="form" id="roomList">
+  <button type="submit">Get Available Rooms</button><br>
+</form>
+<textarea id="rooms" cols="75" rows="25"></textarea>
+
+
+<script>
+  // get all available rooms through clicking a button
+  const roomList = document.getElementById("roomList");
+  roomList.addEventListener("submit", e => {
+    e.preventDefault();
+    // fetch the room data
+    fetch("/roomList")
+    .then(response => response.json())
+    .then(json => document.getElementById("rooms").value = json)
+    .catch(err => console.log(err));  
+  })
 </script>
 
 </body>
