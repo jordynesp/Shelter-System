@@ -89,7 +89,7 @@
 <form class="form" id="roomList">
   <button type="submit">Get Available Rooms</button><br>
 </form>
-<textarea id="rooms" cols="75" rows="25"></textarea>
+<textarea id="rooms" cols="75" rows="10"></textarea><br><br>
 
 
 <script>
@@ -107,19 +107,19 @@
 
 
 <!------------- Get Costumers w/ IDs ------------>
-<form class="form" id="idList">
+<form class="form" id="costumerList">
   <button type="submit">Get Customer IDs</button><br>
 </form>
-<textarea id="ids" cols="75" rows="25"></textarea>
+<textarea id="customer_ids" cols="75" rows="10"></textarea><br><br>
 
 
 <script>
   // get all customers w/ their IDs through clicking a button
-  const idList = document.getElementById("idList");
-  idList.addEventListener("submit", e => {
+  const costumerList = document.getElementById("costumerList");
+  costumerList.addEventListener("submit", e => {
     e.preventDefault();
     // fetch the name/ID pair data
-    fetch("/idList")
+    fetch("/customerList")
     .then(response => response.json())
     .then(json => {
       let result = "";
@@ -127,7 +127,35 @@
         let row = json[key];
         result += `${row.name}: ${row.id}\n`;
       })
-      document.getElementById("ids").value = result;
+      document.getElementById("customer_ids").value = result;
+    })
+    .catch(err => console.log(err));  
+  })
+</script>
+
+
+<!------------- Get Employees w/ IDs ------------>
+<form class="form" id="employeeList">
+  <button type="submit">Get Employee IDs</button><br>
+</form>
+<textarea id="employee_ids" cols="75" rows="10"></textarea><br><br>
+
+
+<script>
+  // get all employees w/ their IDs through clicking a button
+  const employeeList = document.getElementById("employeeList");
+  employeeList.addEventListener("submit", e => {
+    e.preventDefault();
+    // fetch the name/ID pair data
+    fetch("/employeeList")
+    .then(response => response.json())
+    .then(json => {
+      let result = "";
+      Object.keys(json).forEach(key => {
+        let row = json[key];
+        result += `${row.name}: ${row.id}\n`;
+      })
+      document.getElementById("employee_ids").value = result;
     })
     .catch(err => console.log(err));  
   })

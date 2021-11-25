@@ -107,8 +107,26 @@ app.get('/roomList', (req, res) => {
 })
 
 // a get method to send a list of customers and their IDs
-app.get('/idList', (re, res) => {
+app.get('/customerList', (req, res) => {
     let statement = `select name, id from customers`;
+    connection.query(statement, (err, result) => {
+        if (err) throwError(err);
+        let nameIDs = [];
+        Object.keys(result).forEach(key => {
+            let row = result[key];
+            let nameID = {
+                name: row.name,
+                id: row.id
+            }
+            nameIDs.push(nameID);
+        })
+        res.send(JSON.stringify(nameIDs));
+    })
+})
+
+// a get method to send a list of employees and their IDs
+app.get('/employeeList', (req, res) => {
+    let statement = `select name, id from staff`;
     connection.query(statement, (err, result) => {
         if (err) throwError(err);
         let nameIDs = [];
