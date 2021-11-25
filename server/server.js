@@ -86,7 +86,7 @@ app.post('/addCustomer', (req, res) => {
             if (err) throwError(err);
         })
     })
-    res.send("please");
+    res.send(JSON.stringify("Request Complete"));
 });
 
 // a post method to update customers
