@@ -7,10 +7,8 @@ const app = express();
 const mysql = require("mysql");
 const port = 8080;
 
-
 // Parses incoming request bodies
 app.use(bodyParser.json({extended:true}));
-
 
 // Connect to the mysql databse
 const connection = mysql.createConnection({
@@ -93,7 +91,6 @@ app.post('/updateCustomers', (req, res) => {
     let getID = `select * from rooms where id = ${customerID};`
 });
 
-
 // a get method to send a list of available rooms
 app.get('/roomList', (req, res) => {
     let statement = `select room_num from rooms where id = 0`;
@@ -109,6 +106,24 @@ app.get('/roomList', (req, res) => {
     })
 })
 
+// a get method to send a list of employees and their IDs
+app.get('/idList', (re, res) => {
+    let statement = `select name, id from customers`;
+    connection.query(statement, (err, result) => {
+        if (err) throwError(err);
+        let nameIDs = [];
+        Object.keys(result).forEach(key => {
+            let row = result[key];
+            let nameID = {
+                name: row.name,
+                id: row.id
+            }
+            nameIDs.push(nameID);
+        })
+        console.log(nameIDs);
+        res.send(JSON.stringify(nameIDs));
+    })
+})
 
 // Set up routing
 app.use("/", express.static("/app/src/pages"));
@@ -116,8 +131,7 @@ app.get("/", (req, res) => {
     res.redirect("/home.html");
 });
 
-
 // Make the app listen on port 8080
-app.listen(port, function() {
+app.listen(port, () => {
  console.log("Server listening on http://localhost:" + port);
 });

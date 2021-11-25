@@ -105,6 +105,34 @@
   })
 </script>
 
+
+<!------------- Get Employess w/ IDs ------------>
+<form class="form" id="idList">
+  <button type="submit">Get Employee IDs</button><br>
+</form>
+<textarea id="ids" cols="75" rows="25"></textarea>
+
+
+<script>
+  // get all employees w/ their IDs through clicking a button
+  const idList = document.getElementById("idList");
+  idList.addEventListener("submit", e => {
+    e.preventDefault();
+    // fetch the name/ID pair data
+    fetch("/idList")
+    .then(response => response.json())
+    .then(json => {
+      let result = "";
+      Object.keys(json).forEach(key => {
+        let row = json[key];
+        result += `${row.name}: ${row.id}\n`;
+      })
+      document.getElementById("ids").value = result;
+    })
+    .catch(err => console.log(err));  
+  })
+</script>
+
 </body>
 
 </html>
