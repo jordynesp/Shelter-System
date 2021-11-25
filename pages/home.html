@@ -44,11 +44,6 @@
 <!----------------------------------------------->
 
 
-
-
-
-
-
 <!------------- Update Staff Member  ------------>
 <form class="form" id="up-staff">
   <br><label for="title"> Update Staff</label><br>
@@ -86,19 +81,75 @@
 
 
 
-
-<!-- <form class="form" id="del-staff">
+<!------------- Delete Staff Member  ------------>
+<form class="form" id="del-staff">
   <br><label for="title"> Delete Staff:</label><br>
-  <label for="staff-id">ID:</label>
-  <input type="text" name="staff-id" id="staff-id"><br>
+  <label for="deletestaff-id">ID:</label>
+  <input type="text" name="deletestaff-id" id="deletestaff-id"><br>
   <button type="submit">Delete Staff Member</button>
-</form> -->
+</form><br><br>
+<script>
+  const deleteStaff = document.getElementById("del-staff");
+  deleteStaff.addEventListener("submit", e => {
+    e.preventDefault();
+    let data = { 
+      deleteStaffID: document.getElementById("deletestaff-id").value
+    }
+
+    fetch("/deleteStaff", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {"Content-type": "application/json"}
+    })
+    .then(response => response.json())
+    .then(json => console.log(json))
+    .catch(err => console.log(err));
+
+    //clear input fields
+    document.getElementById("deletestaff-id").value = "";   
+  })
+</script>
+<!----------------------------------------------->
 
 
-
-
-
-
+<!----------------- New Customer ---------------->
+<form class="form" id="customer">
+  <label>New Customer</label><br>
+  <label for="customer_name">Name:</label>
+  <input type="text" name="customer_name" id="customer_name"><br>
+  <label for="room_num">Room Number:</label>
+  <input type="text" name="room_num" id="room_num"><br>
+  <label for="log">Log:</label>
+  <input type="text" name="log" id="log"><br>
+  <button type="submit">Add Customer</button>
+</form><br><br>
+<script>  
+  // add a new customer through a form
+  const customer = document.getElementById("customer");
+  customer.addEventListener("submit", e => {
+    e.preventDefault();
+    // data to be sent to server
+    let data = {
+      name: document.getElementById("customer_name").value,
+      room_num: document.getElementById("room_num").value,
+      log: document.getElementById("log").value
+    }
+    // create a fetch request
+    fetch("/addCustomer", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {"Content-type": "application/json"}
+    })
+    .then(response => response.json())
+    .then(json => console.log(json))
+    .catch(err => console.log(err));
+    // clear input fields
+    document.getElementById("customer_name").value = "";
+    document.getElementById("room_num").value = "";
+    document.getElementById("log").value = "";
+  })
+</script>
+<!----------------------------------------------->
 
 
 <!--------------- Update Customer --------------->
@@ -144,52 +195,24 @@
 </script>
 <!----------------------------------------------->
 
+<!------------- Delete Customer  ------------>
 
-
-
-
-<!-- <form class="form" id="del-customer">
+<form class="form" id="del-customer">
   <br><label for="title"> Delete Customer:</label><br>
-  <label for="customer-id">ID:</label>
-  <input type="text" name="customer-id" id="customer-id"><br>
+  <label for="deletecustomer-id">ID:</label>
+  <input type="text" name="deletecustomer-id" id="deletecustomer-id"><br>
   <button type="submit">Delete Customer</button>
-</form> -->
+</form>
 
-
-
-
-
-
-
-
-
-
-<!----------------- New Customer ---------------->
-<form class="form" id="customer">
-  <label>New Customer</label><br>
-  <label for="customer_name">Name:</label>
-  <input type="text" name="customer_name" id="customer_name"><br>
-  <label for="room_num">Room Number:</label>
-  <input type="text" name="room_num" id="room_num"><br>
-  <label for="log">Log:</label>
-  <input type="text" name="log" id="log"><br>
-  <button type="submit">Add Customer</button>
-</form><br><br>
-
-
-<script>  
-  // add a new customer through a form
-  const customer = document.getElementById("customer");
-  customer.addEventListener("submit", e => {
+<script>
+  const deleteCustomer = document.getElementById("del-customer");
+  deleteCustomer.addEventListener("submit", e => {
     e.preventDefault();
-    // data to be sent to server
-    let data = {
-      name: document.getElementById("customer_name").value,
-      room_num: document.getElementById("room_num").value,
-      log: document.getElementById("log").value
+    let data = { 
+      deleteCustomerID: document.getElementById("deletecustomer-id").value
     }
-    // create a fetch request
-    fetch("/addCustomer", {
+
+    fetch("/deleteCustomers", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {"Content-type": "application/json"}
@@ -197,10 +220,9 @@
     .then(response => response.json())
     .then(json => console.log(json))
     .catch(err => console.log(err));
-    // clear input fields
-    document.getElementById("customer_name").value = "";
-    document.getElementById("room_num").value = "";
-    document.getElementById("log").value = "";
+
+    //clear input fields
+    document.getElementById("deletecustomer-id").value = "";   
   })
 </script>
 <!----------------------------------------------->
@@ -247,6 +269,11 @@
   })
 </script>
 <!----------------------------------------------->
+
+
+
+
+
 
 
 

@@ -31,7 +31,7 @@ const throwError = error => {
     console.error(error);
 }
 
-// Staff //
+//------------------------Staff------------------------//
 // a post method to add a new staff
 app.post('/addStaff', (req, res) => {
     let name = req.body.name;
@@ -54,7 +54,16 @@ app.post('/updateStaff', (req, res) => {
     res.send(JSON.stringify("Request Complete"));
 });
 
-// Customers //
+// a post method to delete a staff from staff table when staff's id is given
+app.post('/deleteStaff', (req, res) => { 
+    let staffID = req.body.deleteStaffID;
+    connection.query(`delete from staff where id = ${staffID};`, err => {
+        if (err) throwError(err);
+    });
+    res.send(JSON.stringify("delete Success!"));
+})
+
+//------------------------Customers------------------------//
 // a post method to add a new customer 
 app.post('/addCustomer', (req, res) => {
     let name = req.body.name;
@@ -123,6 +132,27 @@ app.post('/updateCustomers', (req, res) => {
     });
     res.send(JSON.stringify("Request Complete"));
 });
+
+app.post('/deleteCustomers', (req, res) => {
+    let deleteID = req.body.deleteCustomerID;
+   
+    // get the room number to update rooms tables
+    connection.query(`select room_num from rooms where id = ${deleteID};`, (err, result) => {
+        if (err) throwError(err);
+
+        let roomNum = result[0].room_num;
+        console.log(roomNum);
+        connection.query(`update rooms set id = 0 where room_num = ${roomNum};`, err => {
+            if (err) throwError(err);
+        });
+    }); 
+
+    // delete the customer from customers where id is given
+    connection.query(`delete from customers where id = ${deleteID};`, err => {
+        if (err) throwError(err);   
+    })
+    res.send(JSON.stringify("Hombre"));
+})
 
 // a get method to send a list of available rooms
 app.get('/roomList', (req, res) => {
