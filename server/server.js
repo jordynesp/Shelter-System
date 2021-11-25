@@ -135,10 +135,11 @@ app.post('/deleteCustomers', (req, res) => {
     let deleteID = req.body.deleteCustomerID;
    
     // get the room number to update rooms tables
-    connection.query(`select room_num where id = ${deleteID};`, (err, result) => {
+    connection.query(`select room_num from rooms where id = ${deleteID};`, (err, result) => {
         if (err) throwError(err);
 
         let roomNum = result[0].room_num;
+        console.log(roomNum);
         connection.query(`update rooms set id = 0 where room_num = ${roomNum};`, err => {
             if (err) throwError(err);
         });
@@ -148,6 +149,7 @@ app.post('/deleteCustomers', (req, res) => {
     connection.query(`delete from customers where id = ${deleteID};`, err => {
         if (err) throwError(err);   
     })
+    res.send(JSON.stringify("Hombre"));
 })
 
 // a get method to send a list of available rooms

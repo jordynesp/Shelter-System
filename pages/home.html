@@ -43,10 +43,7 @@
 </script>
 
 
-<<<<<<< Updated upstream
-=======
 <!------------- Update Staff Member  ------------>
->>>>>>> Stashed changes
 <form class="form" id="up-staff">
   <br><label for="title"> Update Staff:</label><br>
   <label for="staff-id">ID:</label>
@@ -80,17 +77,12 @@
         document.getElementById("position").value = "";
   })
 </script>
-<<<<<<< Updated upstream
-
-<!-- <form class="form" id="del-staff">
-=======
 <!----------------------------------------------->
 
 
 
 <!------------- Delete Staff Member  ------------>
 <form class="form" id="del-staff">
->>>>>>> Stashed changes
   <br><label for="title"> Delete Staff:</label><br>
   <label for="deletestaff-id">ID:</label>
   <input type="text" name="deletestaff-id" id="deletestaff-id"><br>
@@ -104,8 +96,6 @@
       deleteStaffID: document.getElementById("deletestaff-id").value
     }
 
-<<<<<<< Updated upstream
-=======
     fetch("/deleteStaff", {
       method: "POST",
       body: JSON.stringify(data),
@@ -133,8 +123,6 @@
   <input type="text" name="log" id="log"><br>
   <button type="submit">Add Customer</button>
 </form><br><br>
-
-
 <script>  
   // add a new customer through a form
   const customer = document.getElementById("customer");
@@ -165,7 +153,6 @@
 
 
 <!--------------- Update Customer --------------->
->>>>>>> Stashed changes
 <form class="form" id="up-customer">
   <br><label for="title"> Update Customer:</label><br>
   <label for="customer-id">ID:</label>
@@ -206,43 +193,17 @@
     document.getElementById("room").value = "";
     document.getElementById("log").value = "";
   })
-<<<<<<< Updated upstream
-
-</script>
-
-<!-- <form class="form" id="del-customer">
-=======
 </script>
 <!----------------------------------------------->
 
 <!------------- Delete Customer  ------------>
 
 <form class="form" id="del-customer">
->>>>>>> Stashed changes
   <br><label for="title"> Delete Customer:</label><br>
   <label for="deletecustomer-id">ID:</label>
   <input type="text" name="deletecustomer-id" id="deletecustomer-id"><br>
   <button type="submit">Delete Customer</button>
-<<<<<<< Updated upstream
-</form> -->
-
-
-
-<!----------------- New Customer ---------------->
-<form class="form" id="customer">
-  <label>New Customer</label><br>
-  <label for="customer_name">Name:</label>
-  <input type="text" name="customer_name" id="customer_name"><br>
-  <label for="room_num">Room Number:</label>
-  <input type="text" name="room_num" id="room_num"><br>
-  <label for="log">Log:</label>
-  <input type="text" name="log" id="log"><br>
-  <button type="submit">Add Customer</button>
-</form><br><br>
-=======
 </form>
->>>>>>> Stashed changes
-
 
 <script>
   const deleteCustomer = document.getElementById("del-customer");
@@ -252,7 +213,7 @@
       deleteCustomerID: document.getElementById("deletecustomer-id").value
     }
 
-    fetch("/deleteCustomer", {
+    fetch("/deleteCustomers", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {"Content-type": "application/json"}
@@ -265,18 +226,6 @@
     document.getElementById("deletecustomer-id").value = "";   
   })
 </script>
-<<<<<<< Updated upstream
-=======
-
-<!----------------------------------------------->
-
-
-
-
-
-
-
->>>>>>> Stashed changes
 
 
 
