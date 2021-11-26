@@ -11,71 +11,87 @@
     <form class="form" id="addCustomer">
       <label for="customer_name">Name:</label>
       <input type="text" name="customer_name" id="customer_name"><br>
-      <label for="room_num">Room Number:</label>
-      <input type="text" name="room_num" id="room_num"><br>
       <label for="log">Log:</label>
       <input type="text" name="log" id="log"><br><br>
       <button type="submit">Add Customer</button>
+      <select id="rooms" name="rooms"></select>
     </form>
       <button onclick="location.href='customers.html'"> Back </button>
       <button onclick="location.href='home.html'"> Home Page</button><br><br>
 
-      <script>  
-        // add a new customer through a form
-        const addCustomer = document.getElementById("addCustomer");
-        addCustomer.addEventListener("submit", e => {
-          e.preventDefault();
-          // data to be sent to server
-          let data = {
-            name: document.getElementById("customer_name").value,
-            room_num: document.getElementById("room_num").value,
-            log: document.getElementById("log").value
-          }
-          let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+  <script>
+    // Create the dropdown list
+    let dropdown = document.getElementById('rooms');
+    dropdown.length = 0;
 
-          
-          // check for special characters and if ID is a number
-          if ((!format.test(data.name) && data.name != "") && (!format.test(data.room_num) && !isNaN(data.room_num) && data.room_num != 0) && data.log != "") {
-            // create a fetch request
-            fetch("/addCustomer", {
-              method: "POST",
-              body: JSON.stringify(data),
-              headers: {"Content-type": "application/json"}
-            })
-            .then(response => response.json())
-            .then(json => console.log(json))
-            .catch(err => console.log(err));
-            
-          } else {
-            alert("Please fill in all text boxes");
-          }
+    let defaultOption = document.createElement('option');
+    defaultOption.text = 'Choose A Room:';
 
-          // clear input fields
-          document.getElementById("customer_name").value = "";
-          document.getElementById("room_num").value = "";
-          document.getElementById("log").value = "";
-        });
+    dropdown.add(defaultOption);
+    dropdown.selectedIndex = 0;
 
-      </script>
+    fetch("/roomList")  
+    .then(  
+      function(response) {  
+        if (response.status !== 200) {  
+          console.warn('Error. Status Code: ' + 
+            response.status);  
+          return;  
+        }
 
-    <form class="form" id="roomList">
-    <button type="submit">Get Available Rooms</button><br>
-    </form>
-    <textarea readonly id="rooms" cols="75" rows="10"></textarea><br><br>
+        response.json().then(function(data) {  
+          let option;
+      
+        for (let i = 0; i < data.length; i++) {
+            option = document.createElement('option');
+            option.text = data[i];
+            option.value = data[i];
+            dropdown.add(option);
+        }    
+        });  
+      }  
+    )  
+    .catch(function(err) {  
+      console.error('Fetch Error -', err);  
+    });
 
+    
+    // add a new customer through a form
+    const addCustomer = document.getElementById("addCustomer");
+    addCustomer.addEventListener("submit", e => {
+      e.preventDefault();
+      // data to be sent to server
+      var select = document.getElementById('rooms');
+      var value = select.options[select.selectedIndex].value;
 
-    <script>
-      // get all available rooms through clicking a button
-      const roomList = document.getElementById("roomList");
-      roomList.addEventListener("submit", e => {
-        e.preventDefault();
-        // fetch the room data
-        fetch("/roomList")
+      let data = {
+        name: document.getElementById("customer_name").value,
+        room_num: value,
+        log: document.getElementById("log").value
+      }
+      let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+      
+      // check for special characters and if ID is a number
+      if ((!format.test(data.name) && data.name != "") && (!format.test(data.room_num) && !isNaN(data.room_num) && data.room_num != 0) && data.log != "") {
+        // create a fetch request
+        fetch("/addCustomer", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {"Content-type": "application/json"}
+        })
         .then(response => response.json())
-        .then(json => document.getElementById("rooms").value = json)
-        .catch(err => console.log(err));  
-      })
-    </script>
+        .then(json => console.log(json))
+        .catch(err => console.log(err));
+        
+      } else {
+        alert("Please fill in all text boxes");
+      }
 
+      // clear input fields
+      document.getElementById("customer_name").value = "";
+      document.getElementById("log").value = "";
+    });
+
+  </script>
   </body>
 </html>

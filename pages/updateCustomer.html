@@ -10,24 +10,64 @@
     <form class="form" id="up-customer">
       <label for="id">ID:</label>
       <input type="text" name="id" id="id"><br>
-      <label for="room_num">Room Number:</label>
-      <input type="text" name="room_num" id="room_num"><br>
       <label for="log">Log:</label>
       <input type="text" name="log" id="log"><br><br>
       <button type="submit">Update Customer</button>
+      <select id="rooms" name="rooms"></select>
     </form>
       <button onclick="location.href='customers.html'"> Back </button>
       <button onclick="location.href='home.html'"> Home Page</button>
 
       <script>
+        // Create the dropdown list
+        let dropdown = document.getElementById('rooms');
+        dropdown.length = 0;
+
+        let defaultOption = document.createElement('option');
+        defaultOption.text = 'Choose A Room:';
+
+        dropdown.add(defaultOption);
+        dropdown.selectedIndex = 0;
+
+        fetch("/roomList")  
+        .then(  
+          function(response) {  
+            if (response.status !== 200) {  
+              console.warn('Error. Status Code: ' + 
+                response.status);  
+              return;  
+            }
+
+            response.json().then(function(data) {  
+              let option;
+          
+            for (let i = 0; i < data.length; i++) {
+                option = document.createElement('option');
+                option.text = data[i];
+                option.value = data[i];
+                dropdown.add(option);
+            }    
+            });  
+          }  
+        )  
+        .catch(function(err) {  
+          console.error('Fetch Error -', err);  
+        });
+
+
+
         const updateCustomer = document.getElementById("up-customer");
         updateCustomer.addEventListener("submit", e => {
           e.preventDefault();
       
           // data to be sent to server
+          var select = document.getElementById('rooms');
+          var value = select.options[select.selectedIndex].value;
+          console.log(value);
+
           let data = {
             customerID: document.getElementById("id").value,
-            newRoom: document.getElementById("room_num").value,
+            newRoom: value,
             log: document.getElementById("log").value
           }
 
@@ -49,7 +89,6 @@
 
       
           document.getElementById("id").value = "";
-          document.getElementById("room_num").value = "";
           document.getElementById("log").value = "";
         })
       </script>
