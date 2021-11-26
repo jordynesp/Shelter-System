@@ -31,20 +31,31 @@
             room_num: document.getElementById("room_num").value,
             log: document.getElementById("log").value
           }
-          // create a fetch request
-          fetch("/addCustomer", {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {"Content-type": "application/json"}
-          })
-          .then(response => response.json())
-          .then(json => console.log(json))
-          .catch(err => console.log(err));
+          let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+
+          
+          // check for special characters and if ID is a number
+          if ((!format.test(data.name) && data.name != "") && (!format.test(data.room_num) && !isNaN(data.room_num) && data.room_num != 0) && data.log != "") {
+            // create a fetch request
+            fetch("/addCustomer", {
+              method: "POST",
+              body: JSON.stringify(data),
+              headers: {"Content-type": "application/json"}
+            })
+            .then(response => response.json())
+            .then(json => console.log(json))
+            .catch(err => console.log(err));
+            
+          } else {
+            alert("Please fill in all text boxes");
+          }
+
           // clear input fields
           document.getElementById("customer_name").value = "";
           document.getElementById("room_num").value = "";
           document.getElementById("log").value = "";
-        })
+        });
+
       </script>
 
     <form class="form" id="roomList">
