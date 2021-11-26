@@ -44,9 +44,12 @@
 <!----------------------------------------------->
 
 
+
+
+
 <!------------- Update Staff Member  ------------>
 <form class="form" id="up-staff">
-  <br><label for="title"> Update Staff</label><br>
+  <label for="title"> Update Staff</label><br>
   <label for="staff-id">ID:</label>
   <input type="text" name="staff-id" id="staff-id"><br>
   <label for="newPosition">Position:</label>
@@ -58,6 +61,7 @@
   const updateStaff = document.getElementById("up-staff");
   updateStaff.addEventListener("submit", e => {
     e.preventDefault();
+
     // data to be sent to server
     let data = {
       staffID: document.getElementById("staff-id").value,
@@ -76,8 +80,11 @@
     document.getElementById("staff-id").value = "";
     document.getElementById("newPosition").value = "";
   })
+
 </script>
 <!----------------------------------------------->
+
+
 
 
 
@@ -110,6 +117,10 @@
   })
 </script>
 <!----------------------------------------------->
+
+
+
+
 
 
 <!----------------- New Customer ---------------->
@@ -152,9 +163,13 @@
 <!----------------------------------------------->
 
 
+
+
+
+
 <!--------------- Update Customer --------------->
 <form class="form" id="up-customer">
-  <br><label for="title"> Update Customer</label><br>
+  <label for="title"> Update Customer</label><br>
   <label for="customer-id">ID:</label>
   <input type="text" name="customer-id" id="customer-id"><br>
   <label for="room">Room:</label>
@@ -202,14 +217,19 @@
 </script>
 <!----------------------------------------------->
 
-<!------------- Delete Customer  ------------>
+
+
+
+
+
+<!--------------- Delete Customer  -------------->
 
 <form class="form" id="del-customer">
-  <br><label for="title"> Delete Customer:</label><br>
+  <label for="title"> Delete Customer:</label><br>
   <label for="deletecustomer-id">ID:</label>
   <input type="text" name="deletecustomer-id" id="deletecustomer-id"><br>
   <button type="submit">Delete Customer</button>
-</form>
+</form><br><br>
 
 <script>
   const deleteCustomer = document.getElementById("del-customer");
@@ -283,12 +303,6 @@
 
 
 
-
-
-
-
-
-
 <!------------- Get Available Rooms ------------->
 <form class="form" id="roomList">
   <button type="submit">Get Available Rooms</button><br>
@@ -309,9 +323,6 @@
   })
 </script>
 <!----------------------------------------------->
-
-
-
 
 
 
@@ -345,9 +356,6 @@
   })
 </script>
 <!----------------------------------------------->
-
-
-
 
 
 
