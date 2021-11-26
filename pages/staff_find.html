@@ -9,6 +9,7 @@
 <body>
     <h1 style="font-size: 50px;">Find Staff Information</h1>
     <p style="font-size: 20px;"><b> Find ID: </b></p>
+
     <form class="form" id="staffInfo">
         <label>Staff information</label><br>
         <label for="staffInfo-id">ID:</label>
@@ -29,18 +30,25 @@
           let data = {
             id: document.getElementById("id").value
           }
-          // create a fetch request
-          fetch("/staffInfo", {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {"Content-type": "application/json"}
-          })
-          .then(response => response.json())
-          .then(json => {
-            let info = `Name: ${json.name}\nID: ${json.id}\nPosition: ${json.position}`;
-            document.getElementById("staffInfo-result").value = info;
-          })
-          .catch(err => console.log(err));
+          let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+
+          if (!format.test(data.id) && !isNaN(data.id) && data.id != 0) {
+            
+            // create a fetch request
+            fetch("/staffInfo", {
+              method: "POST",
+              body: JSON.stringify(data),
+              headers: {"Content-type": "application/json"}
+            })
+            .then(response => response.json())
+            .then(json => {
+              let info = `Name: ${json.name}\nID: ${json.id}\nPosition: ${json.position}`;
+              document.getElementById("staffInfo-result").value = info;
+            })
+            .catch(err => console.log(err));
+          } else {
+            alert("Please try again");
+          }
           // clear input fields
           document.getElementById("id").value = "";
         })
