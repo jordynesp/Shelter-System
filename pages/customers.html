@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customers</title>
+    <h1 style="font-size: 50px;">
+        Customers
+    </h1>
+    <p style="font-size: 20px;"><b>Please choose:</b></p>
+</head>
+<body>
+    <button onclick="location.href='addCustomer.html'"> Add </button>
+    <button onclick="location.href='updateCustomer.html'">Update</button>
+    <button onclick="location.href='delCustomer.html'">Delete</button>
+    <button onclick="location.href='home.html'"> Back </button><br><br>
+
+
+    <!------------- Get Costumers w/ IDs ------------>
+    <form class="form" id="costumerList">
+    <button type="submit">Get Customer IDs</button><br>
+    </form>
+    <textarea id="customer_ids" cols="75" rows="10"></textarea><br><br>
+  
+  
+  <script>
+    // get all customers w/ their IDs through clicking a button
+    const costumerList = document.getElementById("costumerList");
+    costumerList.addEventListener("submit", e => {
+      e.preventDefault();
+      // fetch the name/ID pair data
+      fetch("/customerList")
+      .then(response => response.json())
+      .then(json => {
+        let result = "";
+        Object.keys(json).forEach(key => {
+          let row = json[key];
+          result += `${row.name}: ${row.id}\n`;
+        })
+        document.getElementById("customer_ids").value = result;
+      })
+      .catch(err => console.log(err));  
+    })
+  </script>
+
+<form class="form" id="customerInfo">
+    <label>Customer Information</label><br>
+    <label for="customerInfo-id">ID:</label>
+    <input type="text" name="customerInfo-id" id="customerInfo-id"><br>
+    <button type="submit">Get Customer Info</button>
+  </form>
+  <textarea id="customerInfo-result" cols="75" rows="5"></textarea><br><br>
+  
+  
+  <script>  
+    // get info about a customer through a form
+    const customerInfo = document.getElementById("customerInfo");
+    customerInfo.addEventListener("submit", e => {
+      e.preventDefault();
+      // data to be sent to server
+      let data = {
+        id: document.getElementById("customerInfo-id").value
+      }
+      // create a fetch request
+      fetch("/customerInfo", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {"Content-type": "application/json"}
+      })
+      .then(response => response.json())
+      .then(json => {
+        let info = `Name: ${json.name}\nID: ${json.id}\nRoom Number: ${json.room_num}\nCheck-In Time: ${json.check_in}\nCheck-Out Time: ${json.check_out}\nLog: ${json.log}\n`;
+        document.getElementById("customerInfo-result").value = info;
+      })
+      .catch(err => console.log(err));
+      // clear input fields
+      document.getElementById("customerInfo-id").value = "";
+    })
+  </script>
+
+</body>
+</html>

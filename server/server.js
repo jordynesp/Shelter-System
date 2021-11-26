@@ -225,7 +225,6 @@ app.get('/employeeList', (req, res) => {
     })
 })
 
-
 // Set up routing
 app.use("/", express.static("/app/src/pages"));
 app.get("/", (req, res) => {
