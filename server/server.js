@@ -163,8 +163,7 @@ app.get('/roomList', (req, res) => {
         if (err) throwError(err);
         let rooms = [];
         Object.keys(result).forEach(key => {
-            let row = result[key];
-            let room = row.room_num;
+            let room = result[key].room_num;
             rooms.push(room);
         })
         res.send(JSON.stringify(rooms));
@@ -222,6 +221,20 @@ app.get('/employeeList', (req, res) => {
             nameIDs.push(nameID);
         })
         res.send(JSON.stringify(nameIDs));
+    })
+})
+
+// a get method to send a list of positions
+app.get('/positionList', (req, res) => {
+    let statement = `select position from staff_positions`;
+    connection.query(statement, (err, result) => {
+        if (err) throwError(err);
+        let positions = [];
+        Object.keys(result).forEach(key => {
+            let position = result[key].position;
+            positions.push(position);
+        })
+        res.send(JSON.stringify(positions));
     })
 })
 

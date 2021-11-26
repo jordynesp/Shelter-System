@@ -9,14 +9,14 @@
 </head>
 <body>
   <form class="form" id="staff">
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name"><br>
-        <label for="position">Position:</label>
-        <input type="text" name="position" id="position"><br><br>
-        <button type="submit">Add Staff Member</button>
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name"><br>
+    <label for="position">Position:</label>
+    <input type="text" name="position" id="position"><br><br>
+    <button type="submit">Add Staff Member</button>
   </form>
     <button onclick="location.href='staff.html'"> Back </button>
-    <button onclick="location.href='home.html'"> Home Page </button>
+    <button onclick="location.href='home.html'"> Home Page </button><br><br>
     <script>
         // add a new staff member through a form
         const staff = document.getElementById("staff");
@@ -40,7 +40,25 @@
           document.getElementById("name").value = "";
           document.getElementById("position").value = "";
         })
-      
+      </script>
+
+
+      <form class="form" id="getPositions">
+        <button type="submit">Get Staff Positions</button><br>
+      </form>
+      <textarea id="staffPositions" cols="75" rows="10"></textarea><br><br>
+
+      <script>
+        // get all staff positions through clicking a button
+      const positionList = document.getElementById("getPositions");
+      positionList.addEventListener("submit", e => {
+        e.preventDefault();
+        // fetch the position data
+        fetch("/positionList")
+        .then(response => response.json())
+        .then(json => document.getElementById("staffPositions").value = json)
+        .catch(err => console.log(err));  
+      })
       </script>
 </body>
 </html>
