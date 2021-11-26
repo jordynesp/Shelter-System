@@ -9,14 +9,14 @@
 <body>
     <h1 style="font-size: 50px;">Find Staff Information</h1>
     <p style="font-size: 20px;"><b> Find ID: </b></p>
-    <form class="form" id="staffinfo">
+    <form class="form" id="staffInfo">
         <label>Staff information</label><br>
         <label for="staffInfo-id">ID:</label>
         <input type="text" name="staffInfo-id" id="staffInfo-id"><br>
         <button type="submit">Get Staff Info</button>
     </form>
-     <textarea id="staffInfo-result" cols="75" rows="5"></textarea><br><br>
-    <button onclick="location.href='home.html'"> Back </button>
+    <textarea id="staffInfo-result" cols="75" rows="5"></textarea><br><br>
+    <button onclick="location.href='staff.html'"> Back </button>
     <button onclick="location.href='home.html'"> Home Page </button>
 
     <!--Get staff ID info-->
@@ -44,5 +44,6 @@
           // clear input fields
           document.getElementById("staffInfo-id").value = "";
         })
+        </script>
 </body>
 </html>
