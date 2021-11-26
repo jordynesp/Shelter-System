@@ -12,7 +12,7 @@
     <label for="name">Name:</label>
     <input type="text" name="name" id="name"><br>
     <label for="position">Position:</label>
-    <input type="text" name="position" id="position"><br><br>
+    <select name="position" id="position"></select><br><br>
     <button type="submit">Add Staff Member</button>
   </form>
     <button onclick="location.href='staff.html'"> Back </button>
@@ -40,25 +40,22 @@
           document.getElementById("name").value = "";
           document.getElementById("position").value = "";
         })
-      </script>
+    </script>
+    <!-- Populates the dropdown with jobs -->
+    <script>
+      let dropdown = document.getElementById('position');
 
-
-      <form class="form" id="getPositions">
-        <button type="submit">Get Staff Positions</button><br>
-      </form>
-      <textarea id="staffPositions" cols="75" rows="10"></textarea><br><br>
-
-      <script>
-        // get all staff positions through clicking a button
-      const positionList = document.getElementById("getPositions");
-      positionList.addEventListener("submit", e => {
-        e.preventDefault();
-        // fetch the position data
-        fetch("/positionList")
-        .then(response => response.json())
-        .then(json => document.getElementById("staffPositions").value = json)
-        .catch(err => console.log(err));  
+      fetch('/positionList')
+      .then(response => response.json())
+      .then(json => {
+        for (let i = 0; i < json.length; i++) {
+          let option = document.createElement('option');
+          option.text = json[i];
+          option.text = json[i];
+          dropdown.add(option);
+        }
+        dropdown.defaultSelected = 0;
       })
-      </script>
+    </script>
 </body>
 </html>

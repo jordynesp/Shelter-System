@@ -12,11 +12,28 @@
         <label for="id">ID:</label>
         <input type="text" name="id" id="id"><br>
         <label for="position">Position:</label>
-        <input type="text" name="position" id="position"><br><br>
+        <select name="position" id="position"></select><br><br>
         <button type="submit">Update Staff Member</button>
     </form>
     <button onclick="location.href='staff.html'"> Back </button>
     <button onclick="location.href='home.html'"> Home Page</button>
+
+    <!-- Populates the dropdown with jobs -->
+    <script>
+      let dropdown = document.getElementById('position');
+
+      fetch('/positionList')
+      .then(response => response.json())
+      .then(json => {
+        for (let i = 0; i < json.length; i++) {
+          let option = document.createElement('option');
+          option.text = json[i];
+          option.text = json[i];
+          dropdown.add(option);
+        }
+        dropdown.defaultSelected = 0;
+      })
+    </script>
 
     <script>
         const updateStaff = document.getElementById("updateStaff");
