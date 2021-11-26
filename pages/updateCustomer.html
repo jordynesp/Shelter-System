@@ -24,31 +24,29 @@
         updateCustomer.addEventListener("submit", e => {
           e.preventDefault();
       
-          let newRoom = document.getElementById("room_num").value;
-          if (newRoom == "") {
-            newRoom = null;
-          }
-          let log = document.getElementById("log").value;
-          if (log == "") {
-            log = null;
-          }
-      
           // data to be sent to server
-          let newData = {
+          let data = {
             customerID: document.getElementById("id").value,
-            newRoom: newRoom,
-            log: log
+            newRoom: document.getElementById("room_num").value,
+            log: document.getElementById("log").value
           }
-      
-          // create a fetch request
-          fetch("/updateCustomers", {
-            method: "POST",
-            body: JSON.stringify(newData),
-            headers: {"Content-type": "application/json"}
-          })
-          .then(response => response.json())
-          .then(json => console.log(json))
-          .catch(err => console.log(err));
+
+          let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+
+          if ((!format.test(data.customerID) && !isNaN(data.customerID) && data.customerID != 0) && (!format.test(data.newRoom) && !isNaN(data.newRoom) && data.newRoom != 0) && data.log != "") {
+            // create a fetch request
+            fetch("/updateCustomers", {
+              method: "POST",
+              body: JSON.stringify(data),
+              headers: {"Content-type": "application/json"}
+            })
+            .then(response => response.json())
+            .then(json => console.log(json))
+            .catch(err => console.log(err));
+          } else {
+            alert("Please try again");
+          }
+
       
           document.getElementById("id").value = "";
           document.getElementById("room_num").value = "";
