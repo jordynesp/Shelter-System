@@ -3,13 +3,13 @@ A system used for a CBO to keep track of residents in a shelter.
 
 TO-DO:
 - create a drop-down menu of available rooms for customer add and customer update
+- create a drop-down menu of all possible staff positions for staff add and staff update
 - set text areas as read only
 - separate get specific customer info into another page
 - separate get specific staff into another page
 - create check out button for customer
 - set the timezone of the database (last minute task)
 - (we are assuming valid input for part A)
-
 
 
 COMPLETED:
