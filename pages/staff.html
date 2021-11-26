@@ -12,6 +12,32 @@
     <button onclick="location.href='staff_create.html'"> Create </button>
     <button onclick="location.href='staff_mng.html'"> Manage </button>
     <button onclick="location.href='staff_del.html'"> Delete </button>
-    <button onclick="location.href='home.html'"> Back </button>
+    <button onclick="location.href='home.html'"> Back </button><br><br>
+
+    <form class="form" id="employeeList">
+        <button type="submit">Get Employee IDs</button><br>
+      </form>
+      <textarea id="employee_ids" cols="75" rows="10"></textarea><br><br>
+      
+      
+      <script>
+        // get all employees w/ their IDs through clicking a button
+        const employeeList = document.getElementById("employeeList");
+        employeeList.addEventListener("submit", e => {
+          e.preventDefault();
+          // fetch the name/ID pair data
+          fetch("/employeeList")
+          .then(response => response.json())
+          .then(json => {
+            let result = "";
+            Object.keys(json).forEach(key => {
+              let row = json[key];
+              result += `${row.name}: ${row.id}\n`;
+            })
+            document.getElementById("employee_ids").value = result;
+          })
+          .catch(err => console.log(err));  
+        })
+      </script>
 </body>
 </html>

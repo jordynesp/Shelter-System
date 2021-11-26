@@ -8,6 +8,7 @@
   </head>
 
   <body>
+    <form class="form" id="addCustomer">
       <label for="customer_name">Name:</label>
       <input type="text" name="customer_name" id="customer_name"><br>
       <label for="room_num">Room Number:</label>
@@ -15,6 +16,55 @@
       <label for="log">Log:</label>
       <input type="text" name="log" id="log"><br><br>
       <button type="submit">Add Customer</button>
+    </form>
       <button onclick="location.href='customers.html'"> Back </button>
-      <button onclick="location.href='home.html'"> Home Page</button>
+      <button onclick="location.href='home.html'"> Home Page</button><br><br>
+
+      <script>  
+        // add a new customer through a form
+        const addCustomer = document.getElementById("addCustomer");
+        addCustomer.addEventListener("submit", e => {
+          e.preventDefault();
+          // data to be sent to server
+          let data = {
+            name: document.getElementById("customer_name").value,
+            room_num: document.getElementById("room_num").value,
+            log: document.getElementById("log").value
+          }
+          // create a fetch request
+          fetch("/addCustomer", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {"Content-type": "application/json"}
+          })
+          .then(response => response.json())
+          .then(json => console.log(json))
+          .catch(err => console.log(err));
+          // clear input fields
+          document.getElementById("customer_name").value = "";
+          document.getElementById("room_num").value = "";
+          document.getElementById("log").value = "";
+        })
+      </script>
+
+    <form class="form" id="roomList">
+    <button type="submit">Get Available Rooms</button><br>
+    </form>
+    <textarea id="rooms" cols="75" rows="10"></textarea><br><br>
+
+
+    <script>
+      // get all available rooms through clicking a button
+      const roomList = document.getElementById("roomList");
+      roomList.addEventListener("submit", e => {
+        e.preventDefault();
+        // fetch the room data
+        fetch("/roomList")
+        .then(response => response.json())
+        .then(json => document.getElementById("rooms").value = json)
+        .catch(err => console.log(err));  
+      })
+    </script>
+
   </body>
+</html>

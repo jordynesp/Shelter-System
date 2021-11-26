@@ -1,7 +1,18 @@
 # Shelter-System
 A system used for a CBO to keep track of residents in a shelter.
 
-TO DO:
+TO-DO:
+- create a drop-down menu of available rooms for customer add and customer update
+- set text areas as read only
+- separate get specific customer info into another page
+- separate get specific staff into another page
+- create check out button for customer
+- set the timezone of the database (last minute task)
+- (we are assuming valid input for part A)
+
+
+
+COMPLETED:
 - create a one-page html client side with minimal functionality for staff
     - inputs for changing/deleting staff
     - inputs for updating/deleting customers
@@ -17,6 +28,3 @@ TO DO:
     - a get method for showing all customers
     - a get method for showing a report of a customer
     - a post method for adding a report about a customer
-
-Extra:
-- set the timezone of the database (last minute task)

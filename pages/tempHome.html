@@ -7,8 +7,8 @@
 
 <body>
 
-<!-------------- New Staff Member  -------------->
-<form class="form" id="staff">
+<!-- ------------ New Staff Member  -------------->
+<!-- <form class="form" id="staff">
   <label>New Staff Member</label><br>
   <label for="staff_name">Name:</label>
   <input type="text" name="staff_name" id="staff_name"><br>
@@ -40,24 +40,24 @@
     document.getElementById("staff_name").value = "";
     document.getElementById("position").value = "";
   })
-</script>
-<!----------------------------------------------->
+</script> -->
+<!--------------------------------------------- -->
 
 
 
 
 
 <!------------- Update Staff Member  ------------>
-<form class="form" id="up-staff">
+<!-- <form class="form" id="up-staff">
   <label for="title"> Update Staff</label><br>
   <label for="staff-id">ID:</label>
   <input type="text" name="staff-id" id="staff-id"><br>
   <label for="newPosition">Position:</label>
   <input type="text" name="newPosition" id="newPosition"><br>
   <button type="submit">Update Staff Member</button>
-</form><br>
+</form><br> -->
 
-<script>
+<!-- <script>
   const updateStaff = document.getElementById("up-staff");
   updateStaff.addEventListener("submit", e => {
     e.preventDefault();
@@ -81,7 +81,7 @@
     document.getElementById("newPosition").value = "";
   })
 
-</script>
+</script> -->
 <!----------------------------------------------->
 
 
@@ -89,13 +89,13 @@
 
 
 <!------------- Delete Staff Member  ------------>
-<form class="form" id="del-staff">
+<!-- <form class="form" id="del-staff">
   <br><label for="title"> Delete Staff:</label><br>
   <label for="deletestaff-id">ID:</label>
   <input type="text" name="deletestaff-id" id="deletestaff-id"><br>
   <button type="submit">Delete Staff Member</button>
-</form><br><br>
-<script>
+</form><br><br> -->
+<!-- <script>
   const deleteStaff = document.getElementById("del-staff");
   deleteStaff.addEventListener("submit", e => {
     e.preventDefault();
@@ -115,7 +115,7 @@
     //clear input fields
     document.getElementById("deletestaff-id").value = "";   
   })
-</script>
+</script> -->
 <!----------------------------------------------->
 
 
@@ -124,7 +124,7 @@
 
 
 <!----------------- New Customer ---------------->
-<form class="form" id="customer">
+<!-- <form class="form" id="customer">
   <label>New Customer</label><br>
   <label for="customer_name">Name:</label>
   <input type="text" name="customer_name" id="customer_name"><br>
@@ -133,8 +133,8 @@
   <label for="log">Log:</label>
   <input type="text" name="log" id="log"><br>
   <button type="submit">Add Customer</button>
-</form><br><br>
-<script>  
+</form><br><br> -->
+<!-- <script>  
   // add a new customer through a form
   const customer = document.getElementById("customer");
   customer.addEventListener("submit", e => {
@@ -159,7 +159,7 @@
     document.getElementById("room_num").value = "";
     document.getElementById("log").value = "";
   })
-</script>
+</script> -->
 <!----------------------------------------------->
 
 
@@ -168,7 +168,7 @@
 
 
 <!--------------- Update Customer --------------->
-<form class="form" id="up-customer">
+<!-- <form class="form" id="up-customer">
   <label for="title"> Update Customer</label><br>
   <label for="customer-id">ID:</label>
   <input type="text" name="customer-id" id="customer-id"><br>
@@ -177,9 +177,9 @@
   <label for="uplog">Log:</label>
   <input type="text" name="uplog" id="uplog"><br>
   <button type="submit">Update Customer</button>
-</form><br><br>
+</form><br><br> -->
 
-<script>
+<!-- <script>
   const updateCustomer = document.getElementById("up-customer");
   updateCustomer.addEventListener("submit", e => {
     e.preventDefault();
@@ -214,7 +214,7 @@
     document.getElementById("room").value = "";
     document.getElementById("uplog").value = "";
   })
-</script>
+</script> -->
 <!----------------------------------------------->
 
 
@@ -224,14 +224,14 @@
 
 <!--------------- Delete Customer  -------------->
 
-<form class="form" id="del-customer">
+<!-- <form class="form" id="del-customer">
   <label for="title"> Delete Customer:</label><br>
   <label for="deletecustomer-id">ID:</label>
   <input type="text" name="deletecustomer-id" id="deletecustomer-id"><br>
   <button type="submit">Delete Customer</button>
-</form><br><br>
+</form><br><br> -->
 
-<script>
+<!-- <script>
   const deleteCustomer = document.getElementById("del-customer");
   deleteCustomer.addEventListener("submit", e => {
     e.preventDefault();
@@ -251,7 +251,7 @@
     //clear input fields
     document.getElementById("deletecustomer-id").value = "";   
   })
-</script>
+</script> -->
 <!----------------------------------------------->
 
 
@@ -261,16 +261,16 @@
 
 
 <!--------------- Get Customer Info ------------->
-<form class="form" id="customerInfo">
+<!-- <form class="form" id="customerInfo">
   <label>Customer Information</label><br>
   <label for="customerInfo-id">ID:</label>
   <input type="text" name="customerInfo-id" id="customerInfo-id"><br>
   <button type="submit">Get Customer Info</button>
 </form>
-<textarea id="customerInfo-result" cols="75" rows="5"></textarea><br><br>
+<textarea id="customerInfo-result" cols="75" rows="5"></textarea><br><br> -->
 
 
-<script>  
+<!-- <script>  
   // get info about a customer through a form
   const customerInfo = document.getElementById("customerInfo");
   customerInfo.addEventListener("submit", e => {
@@ -294,7 +294,7 @@
     // clear input fields
     document.getElementById("customerInfo-id").value = "";
   })
-</script>
+</script> -->
 <!----------------------------------------------->
 
 
@@ -304,7 +304,7 @@
 
 
 <!------------- Get Available Rooms ------------->
-<form class="form" id="roomList">
+<!-- <form class="form" id="roomList">
   <button type="submit">Get Available Rooms</button><br>
 </form>
 <textarea id="rooms" cols="75" rows="10"></textarea><br><br>
@@ -321,7 +321,7 @@
     .then(json => document.getElementById("rooms").value = json)
     .catch(err => console.log(err));  
   })
-</script>
+</script> -->
 <!----------------------------------------------->
 
 
@@ -329,8 +329,8 @@
 
 
 
-<!------------- Get Costumers w/ IDs ------------>
-<form class="form" id="costumerList">
+<!-- ----------- Get Costumers w/ IDs ------------>
+<!-- <form class="form" id="costumerList">
   <button type="submit">Get Customer IDs</button><br>
 </form>
 <textarea id="customer_ids" cols="75" rows="10"></textarea><br><br>
@@ -354,8 +354,8 @@
     })
     .catch(err => console.log(err));  
   })
-</script>
-<!----------------------------------------------->
+</script> -->
+<!--------------------------------------------- -->
 
 
 
@@ -363,7 +363,7 @@
 
 
 <!------------- Get Employees w/ IDs ------------>
-<form class="form" id="employeeList">
+<!-- <form class="form" id="employeeList">
   <button type="submit">Get Employee IDs</button><br>
 </form>
 <textarea id="employee_ids" cols="75" rows="10"></textarea><br><br>
@@ -387,7 +387,7 @@
     })
     .catch(err => console.log(err));  
   })
-</script>
+</script> -->
 <!----------------------------------------------->
 
 
