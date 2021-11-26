@@ -18,6 +18,7 @@ const connection = mysql.createConnection({
     password: 'admin'
 });
 
+
 connection.connect(err => {
     if (err) throw err;
     connection.query("USE shelter;", (err, result) => {

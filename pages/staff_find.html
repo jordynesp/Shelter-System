@@ -12,10 +12,10 @@
     <form class="form" id="staffInfo">
         <label>Staff information</label><br>
         <label for="staffInfo-id">ID:</label>
-        <input type="text" name="staffInfo-id" id="staffInfo-id"><br>
+        <input type="text" name="id" id="id"><br>
         <button type="submit">Get Staff Info</button>
     </form>
-    <textarea id="staffInfo-result" cols="75" rows="5"></textarea><br><br>
+     <textarea readonly id="staffInfo-result" cols="75" rows="5"></textarea><br><br>
     <button onclick="location.href='staff.html'"> Back </button>
     <button onclick="location.href='home.html'"> Home Page </button>
 
@@ -27,7 +27,7 @@
           e.preventDefault();
           // data to be sent to server
           let data = {
-            id: document.getElementById("staffInfo-id").value
+            id: document.getElementById("id").value
           }
           // create a fetch request
           fetch("/staffInfo", {
@@ -42,8 +42,8 @@
           })
           .catch(err => console.log(err));
           // clear input fields
-          document.getElementById("staffInfo-id").value = "";
+          document.getElementById("id").value = "";
         })
-        </script>
+    </script>
 </body>
 </html>
