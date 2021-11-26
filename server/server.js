@@ -192,7 +192,6 @@ app.post('/deleteCustomers', (req, res) => {
         if (err) throwError(err);
 
         let roomNum = result[0].room_num;
-        console.log(roomNum);
         connection.query(`update rooms set id = 0 where room_num = ${roomNum};`, err => {
             if (err) throwError(err);
         });
@@ -252,6 +251,26 @@ app.get('/customerList', (req, res) => {
             nameIDs.push(nameID);
         })
         res.send(JSON.stringify(nameIDs));
+    })
+})
+
+// a post method to checkout a customer
+app.post('/checkoutCustomer', (req, res) => {
+    let id = req.body.id;
+    let check_out = `select check_out from customers where id=${id}`;
+    connection.query(check_out, (err, result) => {
+        if (err) throwError(err);
+        let time = result[0].check_out;
+        if (time != null) {
+            res.send(JSON.stringify("Already checked out"));
+        }
+        else {
+            let statement = `update customers set check_out=now() where id=${id}`;
+            connection.query(statement, (err, result) => {
+                if (err) throwError(err);
+                res.send(JSON.stringify("Request Complete"));
+            })
+        }
     })
 })
 
