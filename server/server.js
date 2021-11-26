@@ -5,6 +5,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const mysql = require("mysql");
+const fs = require('fs');
+const https = require('https');
+const key = fs.readFileSync('./src/key.pem');
+const cert = fs.readFileSync('./src/cert.pem');
+const server = https.createServer({key: key, cert: cert}, app);
+
 const port = 8080;
 
 // Parses incoming request bodies
@@ -68,13 +74,15 @@ app.post('/staffInfo', (req, res) => {
     let statement = `select * from staff where id = ${id}`;
     connection.query(statement, (err, result) => {
         if (err) throwError(err);
-        let info = {
-            name: result[0].name,
-            id: result[0].id,
-            position: result[0].position
+        if (result.length != 0) { 
+            let info = {
+                name: result[0].name,
+                id: result[0].id,
+                position: result[0].position
+            }
+            res.send(JSON.stringify(info));
         }
-        res.send(JSON.stringify(info));
-    })
+    });
 })
 
 // a get method to send a list of staff positions
@@ -126,14 +134,16 @@ app.post('/addCustomer', (req, res) => {
     // get the ID of the new customer
     connection.query(query, (err, result) => {
         if (err) throwError(err);
-        id = result;
-        let update = `update rooms set id = ${id[0].id} where room_num = ${room}`
-        // update the room to hold the ID of the new customer
-        connection.query(update, err => {
-            if (err) throwError(err);
-        })
+        if (result != 0) { 
+            id = result;
+            let update = `update rooms set id = ${id[0].id} where room_num = ${room}`
+            // update the room to hold the ID of the new customer
+            connection.query(update, err => {
+                if (err) throwError(err);
+            })
+            res.send(JSON.stringify("Request Complete"));
+        }
     })
-    res.send(JSON.stringify("Request Complete"));
 });
 
 // a post method to update customers
@@ -141,35 +151,34 @@ app.post('/updateCustomers', (req, res) => {
 
     let customerID = req.body.customerID;
     let newRoom = req.body.newRoom;
-
-    if (newRoom != null) {
-        // set the current room to 0 first
-        connection.query(`select room_num from rooms where id = ${customerID};`, (err, result) => {
-            if (err) throwError(err);
-            
+    
+    // set the current room to 0 first
+    connection.query(`select room_num from rooms where id = ${customerID};`, (err, result) => {
+        if (err) throwError(err);
+        if (result.length != 0) {
             // get the current room number
             let roomNum = result[0].room_num;
 
             connection.query(`update rooms set id = 0 where room_num = ${roomNum};`, err => {
                 if (err) throwError(err);
             });
-        });
+        }
+    });
 
-        // updates the new room number in customers table
-        connection.query(`update customers set room_num = ${newRoom} where id = ${customerID};`, err => {
-            if (err) throwError(err);
-        });
+    // updates the new room number in customers table
+    connection.query(`update customers set room_num = ${newRoom} where id = ${customerID};`, err => {
+        if (err) throwError(err);
+    });
 
-        // updates the customer ID to the new room number
-        connection.query(`update rooms set id = ${customerID} where room_num = ${newRoom}`, err => {
-            if (err) throwError(err);
-        });
-    }
-    
-    if (req.body.log != null) {
-        connection.query(`select * from customers where id = ${customerID};`, (err, result) => {
-            if (err) throwError(err);
-            
+    // updates the customer ID to the new room number
+    connection.query(`update rooms set id = ${customerID} where room_num = ${newRoom}`, err => {
+        if (err) throwError(err);
+    });
+
+    connection.query(`select * from customers where id = ${customerID};`, (err, result) => {
+        if (err) throwError(err);
+        
+        if (result.length != 0) { 
             // get the log of a customer and append a new line 
             let log = result[0].log;
             log += `\nEntry: ${req.body.log}`;
@@ -177,9 +186,9 @@ app.post('/updateCustomers', (req, res) => {
             connection.query(updateLog, err => {
                 if (err) throwError(err);
             });
-        });
-    }
-    res.send(JSON.stringify("Request Complete"));
+            res.send(JSON.stringify("Request Complete"));
+        }
+    });
 });
 
 // a post method to delete a given customer
@@ -189,12 +198,13 @@ app.post('/deleteCustomers', (req, res) => {
     // get the room number to update rooms tables
     connection.query(`select room_num from rooms where id = ${deleteID};`, (err, result) => {
         if (err) throwError(err);
-
-        let roomNum = result[0].room_num;
-        console.log(roomNum);
-        connection.query(`update rooms set id = 0 where room_num = ${roomNum};`, err => {
-            if (err) throwError(err);
-        });
+        if (result.length != 0) {
+            let roomNum = result[0].room_num;
+            console.log(roomNum);
+            connection.query(`update rooms set id = 0 where room_num = ${roomNum};`, err => {
+                if (err) throwError(err);
+            });
+        }
     }); 
 
     // delete the customer from customers where id is given
@@ -224,15 +234,17 @@ app.post('/customerInfo', (req, res) => {
     let statement = `select * from customers where id = ${id}`;
     connection.query(statement, (err, result) => {
         if (err) throwError(err);
-        let info = {
-            name: result[0].name,
-            id: result[0].id,
-            room_num: result[0].room_num,
-            check_in: result[0].check_in,
-            check_out: result[0].check_out,
-            log: result[0].log
+        if (result.length != 0) {
+            let info = {
+                name: result[0].name,
+                id: result[0].id,
+                room_num: result[0].room_num,
+                check_in: result[0].check_in,
+                check_out: result[0].check_out,
+                log: result[0].log
+            }
+            res.send(JSON.stringify(info));
         }
-        res.send(JSON.stringify(info));
     })
 })
 
@@ -258,9 +270,10 @@ app.get('/customerList', (req, res) => {
 app.use("/", express.static("/app/src/pages"));
 app.get("/", (req, res) => {
     res.redirect("/home.html");
+
 });
 
 // Make the app listen on port 8080
-app.listen(port, () => {
+server.listen(port, () => {
  console.log("Server listening on http://localhost:" + port);
 });
