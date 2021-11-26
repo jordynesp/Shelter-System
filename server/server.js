@@ -62,6 +62,53 @@ app.post('/deleteStaff', (req, res) => {
     res.send(JSON.stringify("delete Success!"));
 })
 
+// a post method to retrieve a staff members info
+app.post('/staffInfo', (req, res) => {
+    let id = req.body.id;
+    let statement = `select * from staff where id = ${id}`;
+    connection.query(statement, (err, result) => {
+        if (err) throwError(err);
+        let info = {
+            name: result[0].name,
+            id: result[0].id,
+            position: result[0].position
+        }
+        res.send(JSON.stringify(info));
+    })
+})
+
+// a get method to send a list of staff positions
+app.get('/positionList', (req, res) => {
+    let statement = `select position from staff_positions`;
+    connection.query(statement, (err, result) => {
+        if (err) throwError(err);
+        let positions = [];
+        Object.keys(result).forEach(key => {
+            let position = result[key].position;
+            positions.push(position);
+        })
+        res.send(JSON.stringify(positions));
+    })
+})
+
+// a get method to send a list of employees and their IDs
+app.get('/employeeList', (req, res) => {
+    let statement = `select name, id from staff`;
+    connection.query(statement, (err, result) => {
+        if (err) throwError(err);
+        let nameIDs = [];
+        Object.keys(result).forEach(key => {
+            let row = result[key];
+            let nameID = {
+                name: row.name,
+                id: row.id
+            }
+            nameIDs.push(nameID);
+        })
+        res.send(JSON.stringify(nameIDs));
+    })
+})
+
 //------------------------Customers------------------------//
 // a post method to add a new customer 
 app.post('/addCustomer', (req, res) => {
@@ -135,6 +182,7 @@ app.post('/updateCustomers', (req, res) => {
     res.send(JSON.stringify("Request Complete"));
 });
 
+// a post method to delete a given customer
 app.post('/deleteCustomers', (req, res) => {
     let deleteID = req.body.deleteCustomerID;
    
@@ -203,38 +251,6 @@ app.get('/customerList', (req, res) => {
             nameIDs.push(nameID);
         })
         res.send(JSON.stringify(nameIDs));
-    })
-})
-
-// a get method to send a list of employees and their IDs
-app.get('/employeeList', (req, res) => {
-    let statement = `select name, id from staff`;
-    connection.query(statement, (err, result) => {
-        if (err) throwError(err);
-        let nameIDs = [];
-        Object.keys(result).forEach(key => {
-            let row = result[key];
-            let nameID = {
-                name: row.name,
-                id: row.id
-            }
-            nameIDs.push(nameID);
-        })
-        res.send(JSON.stringify(nameIDs));
-    })
-})
-
-// a get method to send a list of positions
-app.get('/positionList', (req, res) => {
-    let statement = `select position from staff_positions`;
-    connection.query(statement, (err, result) => {
-        if (err) throwError(err);
-        let positions = [];
-        Object.keys(result).forEach(key => {
-            let position = result[key].position;
-            positions.push(position);
-        })
-        res.send(JSON.stringify(positions));
     })
 })
 
