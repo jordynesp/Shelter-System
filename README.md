@@ -3,7 +3,8 @@ A system used for a CBO to keep track of residents in a shelter.
 
 TO-DO:
 - fix dropdown menu in update customer
-- create check out button for customer!!!!!
+- create check out button for customer (in update customer)!!!!!
+    - this requires sending id to server to update check_out time, and then removing the customer from a room and updating those databases
 - need to make sure upon updating customers, that the drop down menu includes any newly freed rooms
 - only clear inputs upon success
 - set the timezone of the database (last minute task)
