@@ -14,10 +14,10 @@
       <input type="text" name="log" id="log"><br><br>
       <button type="submit">Update Customer</button>
       <select id="rooms" name="rooms"></select>
-    </form>
+    </form><br>
     <form class="form" id="checkout">
       <button type="submit">Checkout Customer</button>
-    </form>
+    </form><br>
       <button onclick="location.href='customers.html'"> Back </button>
       <button onclick="location.href='home.html'"> Home Page</button>
 
@@ -83,7 +83,7 @@
 
           let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 
-          if ((!format.test(data.customerID) && !isNaN(data.customerID) && data.customerID != 0)) {
+          if (!format.test(data.customerID) && !isNaN(data.customerID) && data.customerID != 0) {
             // create a fetch request
             fetch("/updateCustomers", {
               method: "POST",
@@ -105,9 +105,30 @@
           }
         })
 
-        const checkout = document.getElementById(checkout);
+        
+        const checkout = document.getElementById("checkout");
         checkout.addEventListener("submit", e => {
           e.preventDefault();
+          let checkoutID = {
+            id: document.getElementById("id").value
+          }
+          let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+
+          if (!format.test(checkoutID.id) && !isNaN(checkoutID.id) && checkoutID.id != 0) {
+            fetch("/checkoutCustomer", {
+            method: "POST",
+            body: JSON.stringify(checkoutID),
+            headers: {"Content-type": "application/json"}            
+            })
+            .then(response => response.json())
+            .then(json => console.log(json))
+            .catch(err => console.log(err));    
+            
+            
+            document.getElementById("id").value = "";
+          } else {
+            alert("Please try again");
+          }
         })
 
       </script>

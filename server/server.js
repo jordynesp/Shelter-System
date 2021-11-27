@@ -179,7 +179,7 @@ app.post('/updateCustomers', (req, res) => {
     }
 
     if (req.body.log != null) {
-        connection.query(`select * from customers where id = ${customerID};`, (err, result) => {
+        connection.query(`select log from customers where id = ${customerID};`, (err, result) => {
             if (err) throwError(err);
             if (result.length != 0) { 
                 // get the log of a customer and append a new line 
@@ -206,15 +206,8 @@ app.post('/deleteCustomers', (req, res) => {
     let deleteID = req.body.deleteCustomerID;
    
     // get the room number to update rooms tables
-    connection.query(`select room_num from rooms where id = ${deleteID};`, (err, result) => {
+    connection.query(`update rooms set id = 0 where id = ${deleteID};`, err => {
         if (err) throwError(err);
-        if (result.length != 0) {
-            let roomNum = result[0].room_num;
-            console.log(roomNum);
-            connection.query(`update rooms set id = 0 where room_num = ${roomNum};`, err => {
-                if (err) throwError(err);
-            });
-        }
     }); 
 
     // delete the customer from customers where id is given
@@ -285,15 +278,23 @@ app.post('/checkoutCustomer', (req, res) => {
         let time = result[0].check_out;
         if (time != null) {
             res.send(JSON.stringify("Already checked out"));
-        }
-        else {
+        } else {
             let statement = `update customers set check_out=now() where id=${id}`;
-            connection.query(statement, (err, result) => {
+            connection.query(statement, err => {
                 if (err) throwError(err);
-                res.send(JSON.stringify("Request Complete"));
-            })
+            });
+            statement = `update customers set room_num = 0 where id = ${id}`;
+            connection.query(statement, err => {
+                if (err) throwError(err);
+            });
         }
     })
+
+    let checkoutRoom = `update rooms set id = 0 where id = ${id}`;
+    connection.query(checkoutRoom, err => {
+        if (err) throwError(err);
+    })
+    res.send(JSON.stringify("Checkout success!"));
 })
 
 // Set up routing
