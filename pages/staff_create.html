@@ -28,7 +28,7 @@
             position: document.getElementById("position").value
           }
           
-          let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+          let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
           if (!format.test(data.name) && data.name != "") {
             // create a fetch request
             fetch("/addStaff", {
@@ -45,7 +45,6 @@
 
           // clear input fields
           document.getElementById("name").value = "";
-          document.getElementById("position").value = "";
         })
     </script>
     <!-- Populates the dropdown with jobs -->

@@ -22,13 +22,6 @@
   <script>
     // Create the dropdown list
     let dropdown = document.getElementById('rooms');
-    dropdown.length = 0;
-
-    let defaultOption = document.createElement('option');
-    defaultOption.text = 'Choose A Room:';
-
-    dropdown.add(defaultOption);
-    dropdown.selectedIndex = 0;
 
     fetch("/roomList")  
     .then(  
@@ -48,6 +41,7 @@
             option.value = data[i];
             dropdown.add(option);
         }    
+        dropdown.defaultSelected = 0;
         });  
       }  
     )  
@@ -63,16 +57,17 @@
       // data to be sent to server
       var select = document.getElementById('rooms');
       var value = select.options[select.selectedIndex].value;
+      var index = select.selectedIndex;
 
       let data = {
         name: document.getElementById("customer_name").value,
         room_num: value,
         log: document.getElementById("log").value
       }
-      let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+      let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
       
       // check for special characters and if ID is a number
-      if ((!format.test(data.name) && data.name != "") && (!format.test(data.room_num) && !isNaN(data.room_num) && data.room_num != 0) && data.log != "") {
+      if ((!format.test(data.name) && data.name != "") && data.log != "") {
         // create a fetch request
         fetch("/addCustomer", {
           method: "POST",
@@ -90,6 +85,8 @@
       // clear input fields
       document.getElementById("customer_name").value = "";
       document.getElementById("log").value = "";
+      dropdown.remove(index);
+      dropdown.defaultOption(0);
     });
 
   </script>
