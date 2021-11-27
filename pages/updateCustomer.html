@@ -15,6 +15,9 @@
       <button type="submit">Update Customer</button>
       <select id="rooms" name="rooms"></select>
     </form>
+    <form class="form" id="checkout">
+      <button type="submit">Checkout Customer</button>
+    </form>
       <button onclick="location.href='customers.html'"> Back </button>
       <button onclick="location.href='home.html'"> Home Page</button>
 
@@ -54,8 +57,6 @@
           console.error('Fetch Error -', err);  
         });
 
-
-
         const updateCustomer = document.getElementById("up-customer");
         updateCustomer.addEventListener("submit", e => {
           e.preventDefault();
@@ -63,17 +64,26 @@
           // data to be sent to server
           var select = document.getElementById('rooms');
           var value = select.options[select.selectedIndex].value;
-          console.log(value);
+          var index = select.selectedIndex;
+
+          // set values to null if no input entered for new room or log
+          if (value == "Choose A Room:") {
+            value = null;
+           }
+          let log = document.getElementById("log").value;
+          if (log == "") {
+            log = null;
+          }
 
           let data = {
             customerID: document.getElementById("id").value,
             newRoom: value,
-            log: document.getElementById("log").value
+            log: log
           }
 
           let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 
-          if ((!format.test(data.customerID) && !isNaN(data.customerID) && data.customerID != 0) && (!format.test(data.newRoom) && !isNaN(data.newRoom) && data.newRoom != 0) && data.log != "") {
+          if ((!format.test(data.customerID) && !isNaN(data.customerID) && data.customerID != 0)) {
             // create a fetch request
             fetch("/updateCustomers", {
               method: "POST",
@@ -83,14 +93,20 @@
             .then(response => response.json())
             .then(json => console.log(json))
             .catch(err => console.log(err));
+            // clear inputs
+            document.getElementById("id").value = "";
+            document.getElementById("log").value = "";
+            if (dropdown.selectedIndex != 0) {
+              dropdown.remove(index);
+            }
+            dropdown.selectedIndex = 0;
           } else {
             alert("Please try again");
           }
-
-      
-          document.getElementById("id").value = "";
-          document.getElementById("log").value = "";
         })
+
+        const checkout = document.getElementById(checkout);
+
       </script>
   </body>
 </html>
